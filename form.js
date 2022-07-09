@@ -151,7 +151,8 @@ class Form {
     }
 
     setDrivesCar(drives) {
-        this.drives = drives;
+        console.log("setting drives...", 154, drives);
+        this.drivesCar = drives;
         this.questionSetThree[0].previousValue = drives;
     }
 

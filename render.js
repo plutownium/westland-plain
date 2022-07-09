@@ -384,8 +384,6 @@ class Render {
     }
 
     dropdown(query, options, previousValue, radioBtnValue) {
-        console.log(options, previousValue, radioBtnValue, 387);
-
         return `
             <div id="dropdownContainer" class="w-auto flex flex-col items-center ${
                 radioBtnValue === "Yes" ? "" : "hidden"
@@ -400,14 +398,6 @@ class Render {
                         >
                             <option value=""></option>
                             ${options.map((option) => {
-                                console.log(
-                                    option,
-                                    previousValue,
-                                    option.toString() === previousValue
-                                        ? "selected"
-                                        : "",
-                                    388
-                                );
                                 return `
                                     <option value="${option}" ${
                                     option.toString() === previousValue
