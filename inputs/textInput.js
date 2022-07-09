@@ -35,7 +35,6 @@ class textInput {
 
     setupInputCommunication(element, handler) {
         element.addEventListener("input", function (event) {
-            console.log(event.target.value, 43);
             handler(event.target.value);
             const parentOfValidationErrorNode =
                 element.parentElement.parentElement.parentElement;

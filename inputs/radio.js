@@ -9,9 +9,9 @@ class radioSelect {
         return `
             <div id="radioSelectContainer" class="flex flex-col">
                 <div>
-                    <h3>${query}</h3>
+                    <h3>${this.query}</h3>
                     <div class="mt-2 flex flex-col justify-start items-start">
-                        ${options
+                        ${this.options
                             .map((option) => {
                                 return `
                                 <div
@@ -23,7 +23,7 @@ class radioSelect {
                                         name="drives"
                                         value="${option}"
                                         ${
-                                            previousValue === option
+                                            this.previousValue === option
                                                 ? "checked"
                                                 : ""
                                         }
@@ -45,5 +45,25 @@ class radioSelect {
         `;
     }
 
-    setupInputCommunication(element, handler) {}
+    setupInputCommunicationWithShowDropdown(element, handler, dropdown) {
+        element.addEventListener("click", function (event) {
+            if (event.target.value) {
+                const validationErrorEl = document.getElementById(
+                    "radioSelectContainer"
+                ).childNodes[3];
+                validationErrorEl.innerHTML = "foo";
+                handler(event.target.value);
+                dropdown.classList.remove("hidden");
+            }
+        });
+    }
+
+    setupInputCommunicationWithHideDropdown(element, handler, dropdown) {
+        element.addEventListener("click", function (event) {
+            if (event.target.value) {
+                handler(event.target.value);
+                dropdown.classList.add("hidden");
+            }
+        });
+    }
 }

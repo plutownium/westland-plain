@@ -1,4 +1,4 @@
-class singleSelect {
+class multiSelect {
     constructor(query, options, previousValue, selections) {
         this.query = query;
         this.options = options;
@@ -49,9 +49,9 @@ class singleSelect {
         `;
     }
 
-    setupInputCommunication(element, handler) {
-        for (let i = 0; i < multiLineSelect.length; i++) {
-            element[i].addEventListener("click", function (event) {
+    setupInputCommunication(elements, handler) {
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].addEventListener("click", function (event) {
                 const parentOfValidationErrorNode = document.getElementById(
                     "multiSelectContainer"
                 ).parentElement;

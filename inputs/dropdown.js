@@ -9,10 +9,10 @@ class dropdown {
     getHtml() {
         return `
             <div id="dropdownContainer" class="w-auto flex flex-col items-center ${
-                radioBtnValue === "Yes" ? "" : "hidden"
+                this.radioBtnValue === "Yes" ? "" : "hidden"
             }">
                 <div>
-                    <h3 class="w-fit">${query}</h3>
+                    <h3 class="w-fit">${this.query}</h3>
                     <div class="w-52">
                         <select
                             class="w-full"
@@ -20,10 +20,10 @@ class dropdown {
                             id="dropdown"
                         >
                             <option value=""></option>
-                            ${options.map((option) => {
+                            ${this.options.map((option) => {
                                 return `
                                     <option value="${option}" ${
-                                    option.toString() === previousValue
+                                    option.toString() === this.previousValue
                                         ? "selected"
                                         : ""
                                 }>
@@ -39,5 +39,14 @@ class dropdown {
                 </div>
             </div>
         `;
+    }
+
+    setupInputCommunication(element, handler) {
+        element.addEventListener("change", function (event) {
+            handler(event.target.value);
+            const validationErrorEl =
+                document.getElementById("dropdownContainer").childNodes[3];
+            validationErrorEl.innerHTML = "bar";
+        });
     }
 }

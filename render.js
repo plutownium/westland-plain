@@ -118,7 +118,6 @@ class Render {
     attachEventListenersForPage(page) {
         const form = this.form;
         if (page === 1) {
-            // order is always the same: event listeners for form inputs, then next/back btn
             const textInputs = document.getElementsByTagName("input");
             const init = new textInput();
             init.setupInputCommunication(textInputs[0], form.setFirstName);
@@ -155,33 +154,23 @@ class Render {
             const yearsExpDropdown = document.getElementById("dropdown");
             const yearsExpDropdownContainer =
                 document.getElementById("dropdownContainer");
-            radioBtns[0].addEventListener("click", function (event) {
-                console.log(event.target.value, 297);
-                if (event.target.value) {
-                    form.setDrivesCar(event.target.value);
-                    yearsExpDropdownContainer.classList.remove("hidden");
-                    const validationErrorEl = document.getElementById(
-                        "radioSelectContainer"
-                    ).childNodes[3];
-                    console.log(validationErrorEl, 223);
-                    validationErrorEl.innerHTML = "foo";
-                }
-            });
-            radioBtns[1].addEventListener("click", function (event) {
-                console.log(event.target.value, 300);
-                if (event.target.value) {
-                    form.setDrivesCar(event.target.value);
-                    yearsExpDropdownContainer.classList.add("hidden");
-                }
-            });
-            yearsExpDropdown.addEventListener("change", function (event) {
-                console.log(event.target.value, 303);
-                form.setYearsExperience(event.target.value);
-                const validationErrorEl =
-                    document.getElementById("dropdownContainer").childNodes[3];
-                console.log(validationErrorEl, 239);
-                validationErrorEl.innerHTML = "bar";
-            });
+            const init = new radioSelect();
+            init.setupInputCommunicationWithShowDropdown(
+                radioBtns[0],
+                form.setDrivesCar,
+                yearsExpDropdownContainer
+            );
+            init.setupInputCommunicationWithHideDropdown(
+                radioBtns[1],
+                form.setDrivesCar,
+                yearsExpDropdownContainer
+            );
+
+            new dropdown().setupInputCommunication(
+                yearsExpDropdown,
+                form.setYearsExperience
+            );
+
             // establish btns
             const submitBtn = document.getElementById("submitBtn");
             submitBtn.addEventListener("click", function () {
