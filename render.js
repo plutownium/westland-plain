@@ -150,6 +150,21 @@ class Render {
                     form.setHobbies(event.target.innerHTML);
                 });
             }
+            const multiLineSelectTickboxes = document.getElementsByClassName(
+                "multiSelectCheckBoxContainer"
+            );
+            for (let i = 0; i < multiLineSelectTickboxes.length; i++) {
+                multiLineSelectTickboxes[i].addEventListener(
+                    "click",
+                    function (event) {
+                        const choice =
+                            multiLineSelectTickboxes[i].parentNode.childNodes[3]
+                                .childNodes[1].innerHTML;
+                        console.log(choice, 162);
+                        form.setHobbies(choice);
+                    }
+                );
+            }
             // establish btns
             const nextBtn = document.getElementById("nextBtn");
             nextBtn.addEventListener("click", function () {
@@ -247,12 +262,7 @@ class Render {
     }
 
     singleSelect(query, options, previousValue, inputHandler) {
-        console.log(
-            options,
-            previousValue,
-
-            252
-        );
+        console.log(options, previousValue, 252);
         return `
         <div class="flex flex-col">
             <div>
@@ -299,7 +309,7 @@ class Render {
                                     class="flex"
                                     class=""
                                 >
-                                    <div class="flex flex-col justify-center items-center">
+                                    <div class="flex flex-col justify-center items-center multiSelectCheckBoxContainer">
                                         <div id="${option}"
                                             class="p-2 h-4 w-4 border-2 border-black multiSelectCheckBox ${
                                                 previousValue
