@@ -51,7 +51,7 @@ class Render {
             .join("");
 
         const header = this.makeHeader(page);
-        const buttons = this.makeButtons(page);
+        const buttons = `<div class="flex">${this.makeButtons(page)}</div>`;
         html = header + html + buttons;
         // console.log(html, "189rm");
         // console.log(this.target, 209);
@@ -65,7 +65,7 @@ class Render {
             </div>
         `;
         const header = this.makeHeader(page);
-        const buttons = this.makeButtons(page);
+        const buttons = `<div class="flex">${this.makeButtons(page)}</div>`;
         this.target.innerHTML = header + html + buttons;
     }
 
@@ -75,7 +75,7 @@ class Render {
 
     makeHeader(page) {
         return `
-            <div>
+            <div class="mb-3">
                 <h2>Page ${page}</h2>
             </div>
         `;
@@ -162,6 +162,7 @@ class Render {
                                 .childNodes[1].innerHTML;
                         console.log(choice, 162);
                         form.setHobbies(choice);
+                        // FIXME: clicking between checkbox and choice adds strange "\nMusic\n" to hobbies
                     }
                 );
             }
@@ -264,7 +265,7 @@ class Render {
     singleSelect(query, options, previousValue, inputHandler) {
         console.log(options, previousValue, 252);
         return `
-        <div class="flex flex-col">
+        <div class="w-40 flex flex-col">
             <div>
                 <h3>${query}</h3>
                 <select
@@ -297,7 +298,7 @@ class Render {
 
     multiSelect(query, options, previousValue, selections) {
         return `
-            <div class="flex flex-col">
+            <div class="w-40 flex flex-col">
                 <div>
                     <h3>${query}</h3>
                     <div>
