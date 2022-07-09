@@ -16,5 +16,3 @@ function test2() {
 function explain() {
     console.log(form, form.explain(), 17);
 }
-
-form.setHasChildren("bobby");

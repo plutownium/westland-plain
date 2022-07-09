@@ -1,160 +1,3 @@
-class Form {
-    firstName = "";
-    lastName = "";
-    hasChildren = null;
-    hobbies = [];
-    drivesCar = null;
-    yearsExperience = null;
-
-    target = null;
-
-    questionSetOne = [
-        {
-            type: "text",
-            query: "First name",
-            previousValue: null,
-            inputHandler: this.setFirstName
-        },
-        {
-            type: "text",
-            query: "Last name",
-            previousValue: null,
-            inputHandler: this.setLastName
-        }
-    ];
-    questionSetTwo = [
-        {
-            type: "single-select",
-            query: "Children",
-            options: ["Yes", "No"],
-            previousValue: null,
-            inputHandler: this.setHasChildren
-        },
-        {
-            type: "multi-select",
-            query: "Hobbies",
-            options: ["Hiking", "Music", "Programming"],
-            previousValue: null,
-            inputHandler: this.setHobbies
-        }
-    ];
-    questionSetThree = [
-        {
-            type: "radio",
-            query: "Drives a car",
-            options: ["Yes", "No"],
-            previousValue: null,
-            inputHandler: this.setDrivesCar
-        },
-        {
-            type: "dropdown",
-            query: "Driving experience in years",
-            options: [...Array(20).keys()],
-            previousValue: null,
-            inputHandler: this.setYearsExperience
-        }
-    ];
-
-    constructor(target) {
-        this.page = 1;
-        this.render = new Render(target, this);
-    }
-
-    explain() {
-        console.log(this, 63);
-    }
-
-    a() {
-        console.log("aaaaaaa");
-    }
-
-    switchToPage(page) {
-        // console.log("Switching to page...", page, "63");
-        // const render = new Render(this.target, this);
-        // console.log(this.target, this.render, 74);
-        if (page <= 3) {
-            this.render.loadPageOfQuestions(
-                this.getQuestionsFromPage(page),
-                page,
-                this.hobbies
-            );
-            this.render.attachEventListenersForPage(page);
-            this.page = page;
-        } else if (page === 4) {
-            this.render.loadUserData(this.getUserData());
-        }
-    }
-
-    getQuestionsFromPage(page) {
-        if (page === 1) {
-            return this.questionSetOne;
-        } else if (page === 2) {
-            return this.questionSetTwo;
-        } else if (page === 3) {
-            return this.questionSetThree;
-        } else {
-            throw new Error("Page out of bounds");
-        }
-    }
-
-    getUserData() {
-        return {
-            firstName: this.firstName,
-            lastName: this.lastName,
-            hasChildren: this.hasChildren,
-            hobbies: this.hobbies,
-            drivesCar: this.drivesCar,
-            yearsExperience: this.yearsExp
-        };
-    }
-
-    setPage(page) {
-        this.page = page;
-    }
-
-    setFirstName(name) {
-        this.firstName = name;
-    }
-
-    setLastName(name) {
-        this.lastName = name;
-    }
-
-    setHasChildren(hasChildren) {
-        this.hasChildren = hasChildren;
-    }
-
-    setHobbies(hobby) {
-        // console.log(this.hobbies, 126);
-        if (this.hobbies.includes(hobby)) {
-            console.log("Removing hobby... 137", hobby);
-            // remove from list
-            const withoutUncheckedValue = this.hobbies.filter(
-                (h) => h !== hobby
-            );
-            this.hobbies = withoutUncheckedValue;
-            if (withoutUncheckedValue.length === 0) {
-                // setValidationError();
-            }
-        } else {
-            const newHobbies = [...this.hobbies];
-            newHobbies.push(hobby);
-            this.hobbies = newHobbies;
-            // setValidationError("");
-        }
-        console.log(this.hobbies, 143);
-        // this.render.colourSelectedHobbiesGreen(this.hobbies);
-    }
-
-    setDrivesCar(drives) {
-        this.drives = drives;
-    }
-
-    setYearsExperience(years) {
-        this.yearsExp = years;
-    }
-}
-
 class Render {
     // text, single-select, multi-select, radio, dropdown
     constructor(target, form) {
@@ -320,15 +163,22 @@ class Render {
         } else if (page === 3) {
             const radioBtns =
                 document.getElementsByClassName("radioSelectOption");
+            const yearsExpDropdown = document.getElementById("dropdown");
+            const yearsExpDropdownContainer =
+                document.getElementById("dropdownContainer");
             radioBtns[0].addEventListener("click", function (event) {
                 console.log(event.target.value, 297);
+                form.setDrivesCar(event.target.value);
+                yearsExpDropdownContainer.classList.remove("hidden");
             });
             radioBtns[1].addEventListener("click", function (event) {
                 console.log(event.target.value, 300);
+                form.setDrivesCar(event.target.value);
+                yearsExpDropdownContainer.classList.add("hidden");
             });
-            const yearsExpDropdown = document.getElementById("dropdown");
             yearsExpDropdown.addEventListener("change", function (event) {
                 console.log(event.target.value, 303);
+                form.setYearsExperience(event.target.value);
             });
             // establish btns
             const submitBtn = document.getElementById("submitBtn");
@@ -351,28 +201,19 @@ class Render {
     }
 
     colourSelectedHobbiesGreen(currentHobbies) {
-        const hobbyChoices =
-            document.getElementsByClassName("multiSelectOption");
-        for (let i = 0; i < hobbyChoices.length; i++) {
-            const choice = hobbyChoices[i].childNodes[1].innerHTML;
-            const parentEl = hobbyChoices[i].parentElement;
-            const boxToColor = parentEl.childNodes[1].childNodes[1];
-            // console.log(choice, parentEl, 343);
-            // console.log(boxToColorGreen, 346);
-            console.log(currentHobbies, choice, 347);
+        const boxesToColor = document.getElementsByClassName(
+            "multiSelectCheckBox"
+        );
+        console.log(boxesToColor, boxesToColor.length, 362);
+        // reset box color if present because we want the process of adding bg color to start with a fresh list
+        for (let i = 0; i < boxesToColor.length; i++) {
+            boxesToColor[i].classList.remove("bg-lime-400");
+        }
+        for (let i = 0; i < boxesToColor.length; i++) {
+            const choice = boxesToColor[i].id;
+            console.log(choice, currentHobbies, 365);
             if (currentHobbies.includes(choice)) {
-                console.log("adding class... 348");
-                boxToColor.classList.add("bg-lime-400");
-            } else if (!currentHobbies.includes(choice)) {
-                console.log("removing class... 354", boxToColor, choice);
-                boxToColor.classList.remove("bg-lime-400");
-            } else {
-                console.log(
-                    "you shouldn't be able to get here you know",
-                    currentHobbies,
-                    choice,
-                    hobbyChoices[i]
-                );
+                boxesToColor[i].classList.add("bg-lime-400");
             }
         }
     }
@@ -460,8 +301,8 @@ class Render {
                                     class=""
                                 >
                                     <div class="flex flex-col justify-center items-center">
-                                        <div id="highlightBoxInner${index}"
-                                            class="p-2 h-4 w-4 border-2 border-black"
+                                        <div id="${option}"
+                                            class="p-2 h-4 w-4 border-2 border-black multiSelectCheckBox"
                                         ></div>
                                     </div>
                                     <div class="p-2 multiSelectOption">
@@ -484,6 +325,8 @@ class Render {
         const valueToCheck =
             previousValue === null ? null : previousValue ? "Yes" : "No";
         // TODO: Render multiSelect with id="someId" and attach "inputHandler" as click event listener to appropriate spot
+        console.log(query, options, previousValue, 321);
+        // checked="${valueToCheck === option}"
         return `
             <div class="flex flex-col">
                 <div>
@@ -499,8 +342,8 @@ class Render {
                                         type="radio"
                                         id="${option}"
                                         name="drives"
-                                        value={option}
-                                        checked="${valueToCheck === option}"
+                                        value="${option}"
+                                        
                                     />
                                     <label class="ml-2" htmlFor="html">
                                         ${option}
@@ -521,7 +364,7 @@ class Render {
     dropdown(query, options, previousValue, inputHandler) {
         // TODO: Render multiSelect with id="someId" and attach "inputHandler" as click event listener to appropriate spot
         return `
-            <div class="w-auto flex flex-col items-center">
+            <div id="dropdownContainer" class="w-auto flex flex-col items-center hidden">
                 <div>
                     <h3 class="w-fit">${query}</h3>
                     <div class="w-52">
@@ -555,46 +398,5 @@ class Render {
                 <p class="text-red-500">${validationError}</p>
             </div>
         `;
-    }
-}
-
-class Validator {
-    // helper methods to validate form inputs
-    validName(name) {
-        return name.length > 1;
-    }
-
-    validHasChildren(hasChildren) {
-        if (hasChildren === true || hasChildren === false) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    validHobbies(currentHobbies, newHobby) {
-        const changeYieldsEmptyArray =
-            currentHobbies.includes(newHobby) && currentHobbies.length === 1;
-        if (changeYieldsEmptyArray) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    validDrivesCar(drives) {
-        if (drives === true || drives === false) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    validYearsExperience(years) {
-        if (years === null) {
-            return false;
-        } else {
-            return true;
-        }
     }
 }
