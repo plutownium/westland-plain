@@ -116,17 +116,30 @@ class Render {
 
     attachEventListenersForPage(page) {
         // console.log("attaching event listeners...", this.form);
+        // TODO: refactor this entire thing into objects
         const form = this.form;
         if (page === 1) {
             // order is always the same: event listeners for form inputs, then next/back btn
             const textInputs = document.getElementsByTagName("input");
             textInputs[0].addEventListener("input", function (event) {
                 form.setFirstName(event.target.value);
+                const parentOfValidationErrorNode =
+                    textInputs[0].parentElement.parentElement.parentElement;
+                const validationErrorEl =
+                    parentOfValidationErrorNode.childNodes[3];
+                console.log(validationErrorEl, 127);
+                validationErrorEl.innerHTML = "Hats";
                 // console.log(event.target.value, 255);
                 // handleInput(event.target.value);
             });
             textInputs[1].addEventListener("input", function (event) {
                 form.setLastName(event.target.value);
+                const parentOfValidationErrorNode =
+                    textInputs[1].parentElement.parentElement.parentElement;
+                const validationErrorEl =
+                    parentOfValidationErrorNode.childNodes[3];
+                console.log(validationErrorEl, 127);
+                validationErrorEl.innerHTML = "Hats";
                 // console.log(event.target.value, 255);
                 // handleInput(event.target.value);
             });
@@ -142,12 +155,25 @@ class Render {
             const singleLineSelect = document.getElementById("singleSelect");
             singleLineSelect.addEventListener("change", function (event) {
                 form.setHasChildren(event.target.value);
+                const parentOfValidationErrorNode =
+                    singleLineSelect.parentElement.parentElement;
+                const validationErrorEl =
+                    parentOfValidationErrorNode.childNodes[3];
+                console.log(validationErrorEl, 159);
+                validationErrorEl.innerHTML = "Spoons";
             });
             const multiLineSelect =
                 document.getElementsByClassName("multiSelectOption");
             for (let i = 0; i < multiLineSelect.length; i++) {
                 multiLineSelect[i].addEventListener("click", function (event) {
                     form.setHobbies(event.target.innerHTML);
+                    const parentOfValidationErrorNode = document.getElementById(
+                        "multiSelectContainer"
+                    ).parentElement;
+                    const validationErrorEl =
+                        parentOfValidationErrorNode.childNodes[3];
+                    console.log(validationErrorEl, 159);
+                    validationErrorEl.innerHTML = "Bowls";
                 });
             }
             const multiLineSelectTickboxes = document.getElementsByClassName(
@@ -163,6 +189,14 @@ class Render {
                         console.log(choice, 162);
                         form.setHobbies(choice);
                         // FIXME: clicking between checkbox and choice adds strange "\nMusic\n" to hobbies
+                        const parentOfValidationErrorNode =
+                            document.getElementById(
+                                "multiSelectContainer"
+                            ).parentElement;
+                        const validationErrorEl =
+                            parentOfValidationErrorNode.childNodes[3];
+                        console.log(validationErrorEl, 159);
+                        validationErrorEl.innerHTML = "Bowls";
                     }
                 );
             }
@@ -186,6 +220,11 @@ class Render {
                 if (event.target.value) {
                     form.setDrivesCar(event.target.value);
                     yearsExpDropdownContainer.classList.remove("hidden");
+                    const validationErrorEl = document.getElementById(
+                        "radioSelectContainer"
+                    ).childNodes[3];
+                    console.log(validationErrorEl, 223);
+                    validationErrorEl.innerHTML = "foo";
                 }
             });
             radioBtns[1].addEventListener("click", function (event) {
@@ -198,6 +237,10 @@ class Render {
             yearsExpDropdown.addEventListener("change", function (event) {
                 console.log(event.target.value, 303);
                 form.setYearsExperience(event.target.value);
+                const validationErrorEl =
+                    document.getElementById("dropdownContainer").childNodes[3];
+                console.log(validationErrorEl, 239);
+                validationErrorEl.innerHTML = "bar";
             });
             // establish btns
             const submitBtn = document.getElementById("submitBtn");
@@ -255,7 +298,7 @@ class Render {
                         />
                     </div>
                 </div>
-                <div id="validationErrorContainer">
+                <div class="validationErrorContainer">
                     
                 </div>
             </div>
@@ -289,7 +332,7 @@ class Render {
                         .join("")}
                 </select>
             </div>
-            <div id="validationErrorContainer">
+            <div class="validationErrorContainer">
                     
             </div>
         </div>
@@ -299,7 +342,7 @@ class Render {
     multiSelect(query, options, previousValue, selections) {
         return `
             <div class="w-40 flex flex-col">
-                <div>
+                <div id="multiSelectContainer">
                     <h3>${query}</h3>
                     <div>
                         ${options
@@ -332,7 +375,7 @@ class Render {
                             .join("")}
                     </div>
                 </div>
-                <div id="validationErrorContainer">
+                <div class="validationErrorContainer">
                     
                 </div>
             </div>
@@ -346,7 +389,7 @@ class Render {
         console.log(query, options, "prevValue:", previousValue, 321);
         // checked="${valueToCheck === option}"
         return `
-            <div class="flex flex-col">
+            <div id="radioSelectContainer" class="flex flex-col">
                 <div>
                     <h3>${query}</h3>
                     <div class="mt-2 flex flex-col justify-start items-start">
@@ -377,7 +420,7 @@ class Render {
                             .join("")}
                     </div>
                 </div>
-                <div id="validationErrorContainer">
+                <div class="validationErrorContainer">
                     
                 </div>
             </div>
@@ -412,7 +455,7 @@ class Render {
                         </select>
                     </div>
                 </div>
-                <div id="validationErrorContainer">
+                <div class="validationErrorContainer">
                     
                 </div>
             </div>
