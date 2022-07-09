@@ -12,14 +12,24 @@ class Validator {
         }
     }
 
-    validHobbies(currentHobbies, newHobby) {
+    changeWouldYieldEmptyArray(newHobby, currentHobbies) {
         const changeYieldsEmptyArray =
             currentHobbies.includes(newHobby) && currentHobbies.length === 1;
+        console.log(newHobby, currentHobbies, changeYieldsEmptyArray, 16);
         if (changeYieldsEmptyArray) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
+    }
+
+    wellFormedHobby(hobby) {
+        const malformedSelection = hobby.includes("\n");
+        if (malformedSelection) {
+            console.log("malformed selection", hobby, 18);
+            return false;
+        }
+        return true;
     }
 
     validDrivesCar(drives) {

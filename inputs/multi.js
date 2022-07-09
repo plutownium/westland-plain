@@ -4,6 +4,27 @@ class multiSelect {
         this.options = options;
         this.previousValue = previousValue;
         this.selections = selections;
+        this.internalHobbies = [];
+    }
+
+    setHobby(hobby) {
+        if (this.internalHobbies.includes(hobby)) {
+            // remove from list
+            console.log("removing...", hobby);
+            const withoutUncheckedValue = this.internalHobbies.filter(
+                (h) => h !== hobby
+            );
+            this.internalHobbies = withoutUncheckedValue;
+            if (withoutUncheckedValue.length === 0) {
+                // setValidationError();
+            }
+        } else {
+            console.log("adding...", hobby);
+            const newHobbies = [...this.internalHobbies];
+            newHobbies.push(hobby);
+            this.internalHobbies = newHobbies;
+            // setValidationError("");
+        }
     }
 
     getHtml() {
@@ -49,23 +70,47 @@ class multiSelect {
         `;
     }
 
-    setupInputCommunication(elements, handler) {
+    setupInputCommunication(elements, handler, currentHobbies) {
+        const multiThis = this;
         for (let i = 0; i < elements.length; i++) {
             elements[i].addEventListener("click", function (event) {
+                const choice = event.target.innerHTML;
                 const parentOfValidationErrorNode = document.getElementById(
                     "multiSelectContainer"
                 ).parentElement;
                 const validationErrorEl =
                     parentOfValidationErrorNode.childNodes[3];
-                const valid = new Validator().validDrivesCar(
-                    event.target.value
+                const validator = new Validator();
+                if (!validator.wellFormedHobby(choice)) {
+                    return; // pretend the click never happened
+                }
+
+                console.log(
+                    multiThis.internalHobbies,
+                    choice,
+                    currentHobbies,
+                    validator.changeWouldYieldEmptyArray(
+                        choice,
+                        currentHobbies
+                    ),
+                    63
                 );
-                console.log("Ticked, 55", event.target.value);
-                if (valid) {
-                    handler(event.target.innerHTML);
-                } else {
+                if (
+                    validator.changeWouldYieldEmptyArray(
+                        choice,
+                        multiThis.internalHobbies
+                    )
+                ) {
+                    console.log("Text should read with error");
+                    multiThis.setHobby(choice);
+                    handler(choice);
                     validationErrorEl.innerHTML =
                         "Must select at least one hobby";
+                } else {
+                    console.log("no warning given");
+                    multiThis.setHobby(choice);
+                    handler(choice);
+                    validationErrorEl.innerHTML = "";
                 }
             });
         }

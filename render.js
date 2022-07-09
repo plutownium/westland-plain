@@ -135,9 +135,12 @@ class Render {
             );
             const multiLineSelect =
                 document.getElementsByClassName("multiSelectOption");
-            new multiSelect().setupInputCommunication(
+            console.log(form.hobbies, "138rm");
+            const initMulti = new multiSelect();
+            initMulti.setupInputCommunication(
                 multiLineSelect,
-                form.setHobbies
+                form.setHobbies,
+                form.hobbies
             );
             // establish btns
             const nextBtn = document.getElementById("nextBtn");

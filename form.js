@@ -135,6 +135,7 @@ class Form {
     setHobbies = (hobby) => {
         if (this.hobbies.includes(hobby)) {
             // remove from list
+            console.log("removing...", hobby);
             const withoutUncheckedValue = this.hobbies.filter(
                 (h) => h !== hobby
             );
@@ -143,6 +144,7 @@ class Form {
                 // setValidationError();
             }
         } else {
+            console.log("adding...", hobby);
             const newHobbies = [...this.hobbies];
             newHobbies.push(hobby);
             this.hobbies = newHobbies;
