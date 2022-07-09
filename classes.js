@@ -125,10 +125,13 @@ class Form {
     }
 
     setHobbies(hobby) {
-        console.log(this.hobbies, 126);
+        // console.log(this.hobbies, 126);
         if (this.hobbies.includes(hobby)) {
+            console.log("Removing hobby... 137", hobby);
             // remove from list
-            const withoutUncheckedValue = hobbies.filter((h) => h !== hobby);
+            const withoutUncheckedValue = this.hobbies.filter(
+                (h) => h !== hobby
+            );
             this.hobbies = withoutUncheckedValue;
             if (withoutUncheckedValue.length === 0) {
                 // setValidationError();
@@ -139,7 +142,8 @@ class Form {
             this.hobbies = newHobbies;
             // setValidationError("");
         }
-        this.render.colourSelectedHobbiesGreen(this.hobbies);
+        console.log(this.hobbies, 143);
+        // this.render.colourSelectedHobbiesGreen(this.hobbies);
     }
 
     setDrivesCar(drives) {
@@ -281,6 +285,7 @@ class Render {
                 form.switchToPage(page + 1);
             });
         } else if (page === 2) {
+            // TODO: If hobbies option is selected, replace the evt listener with a "remove hobby" evt listener
             const singleLineSelect = document.getElementById("singleSelect");
             singleLineSelect.addEventListener("change", function (event) {
                 form.setHasChildren(event.target.value);
@@ -290,6 +295,16 @@ class Render {
             for (let i = 0; i < multiLineSelect.length; i++) {
                 multiLineSelect[i].addEventListener("click", function (event) {
                     form.setHobbies(event.target.innerHTML);
+                    // multiLineSelect[i].classList.
+                    // var old_element = multiLineSelect[i];
+                    // var new_element = old_element.cloneNode(true);
+                    // old_element.parentNode.replaceChild(
+                    //     new_element,
+                    //     old_element
+                    // );
+                    // new_element.addEventListener("click", function (event) {
+                    //     form.setHobbies(event.target.innerHTML);
+                    // });
                 });
             }
             // special event listeners to color form box green if it is selected.
@@ -341,16 +356,16 @@ class Render {
         for (let i = 0; i < hobbyChoices.length; i++) {
             const choice = hobbyChoices[i].childNodes[1].innerHTML;
             const parentEl = hobbyChoices[i].parentElement;
-            const boxToColorGreen = parentEl.childNodes[1].childNodes[1];
+            const boxToColor = parentEl.childNodes[1].childNodes[1];
             // console.log(choice, parentEl, 343);
             // console.log(boxToColorGreen, 346);
             console.log(currentHobbies, choice, 347);
             if (currentHobbies.includes(choice)) {
                 console.log("adding class... 348");
-                boxToColorGreen.classList.add("bg-lime-400");
+                boxToColor.classList.add("bg-lime-400");
             } else if (!currentHobbies.includes(choice)) {
-                console.log("removing class... 354");
-                boxToColorGreen.classList.remove("bg-lime-400");
+                console.log("removing class... 354", boxToColor, choice);
+                boxToColor.classList.remove("bg-lime-400");
             } else {
                 console.log(
                     "you shouldn't be able to get here you know",
@@ -433,14 +448,19 @@ class Render {
                     <h3>${query}</h3>
                     <div>
                         ${options
-                            .map((option) => {
+                            .map((option, index) => {
+                                // return `
+                                //     <input class="p-2 multiSelectOption" type="checkbox" id="checkbox${index}" name="${option}" value="${option}">
+                                //     <label for="${option}"> ${option}</label><br>
+                                // `
                                 return `
                                 <div
+                                    id="highlightBoxOuter${index}"
                                     class="flex"
                                     class=""
                                 >
                                     <div class="flex flex-col justify-center items-center">
-                                        <div
+                                        <div id="highlightBoxInner${index}"
                                             class="p-2 h-4 w-4 border-2 border-black"
                                         ></div>
                                     </div>
