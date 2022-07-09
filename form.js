@@ -83,6 +83,8 @@ class Form {
         } else if (page === 4) {
             console.log("load user data... 84");
             this.render.loadUserData(this.getUserData(), page);
+            this.render.attachEventListenersForPage(page);
+            this.page = page;
         }
     }
 

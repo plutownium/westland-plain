@@ -65,7 +65,8 @@ class Render {
             </div>
         `;
         const header = this.makeHeader(page);
-        this.target.innerHTML = header + html;
+        const buttons = this.makeButtons(page);
+        this.target.innerHTML = header + html + buttons;
     }
 
     test() {
@@ -82,11 +83,13 @@ class Render {
 
     makeButtons(page) {
         if (page === 1) {
-            return this.makeBtn("empty", 1) + this.makeBtn("next", 2);
+            return this.makeBtn("empty", null) + this.makeBtn("next", 2);
         } else if (page === 2) {
-            return this.makeBtn("back", 2) + this.makeBtn("next", 3);
+            return this.makeBtn("back", 1) + this.makeBtn("next", 3);
         } else if (page === 3) {
-            return this.makeBtn("back", 3) + this.makeBtn("submit", 4);
+            return this.makeBtn("back", 2) + this.makeBtn("submit", 4);
+        } else if (page === 4) {
+            return this.makeBtn("back", 3);
         } else {
             throw new Error("page index out of range or wasn't provided");
         }
@@ -101,8 +104,8 @@ class Render {
         }
         return `
             <div>
-                <div id="${type}Btn">
-                    <button 
+                <div>
+                    <button id="${type}Btn"
                         class="m-2 p-2 border-2 border-gray-300 text-gray-300 text-md rounded-md"
                     >
                         <span class="${type}Btn text-gray-400">${type}</span>
@@ -176,13 +179,17 @@ class Render {
                 document.getElementById("dropdownContainer");
             radioBtns[0].addEventListener("click", function (event) {
                 console.log(event.target.value, 297);
-                form.setDrivesCar(event.target.value);
-                yearsExpDropdownContainer.classList.remove("hidden");
+                if (event.target.value) {
+                    form.setDrivesCar(event.target.value);
+                    yearsExpDropdownContainer.classList.remove("hidden");
+                }
             });
             radioBtns[1].addEventListener("click", function (event) {
                 console.log(event.target.value, 300);
-                form.setDrivesCar(event.target.value);
-                yearsExpDropdownContainer.classList.add("hidden");
+                if (event.target.value) {
+                    form.setDrivesCar(event.target.value);
+                    yearsExpDropdownContainer.classList.add("hidden");
+                }
             });
             yearsExpDropdown.addEventListener("change", function (event) {
                 console.log(event.target.value, 303);
@@ -200,6 +207,7 @@ class Render {
         } else if (page === 4) {
             const backBtn = document.getElementById("backBtn");
             backBtn.addEventListener("click", function () {
+                console.log("in the back btn 206");
                 form.switchToPage(page - 1);
             });
         } else {
