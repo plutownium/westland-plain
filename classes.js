@@ -55,8 +55,9 @@ class Form {
         }
     ];
 
-    constructor() {
+    constructor(target) {
         this.page = 1;
+        this.render = new Render(target, this);
     }
 
     explain() {
@@ -68,18 +69,19 @@ class Form {
     }
 
     switchToPage(page) {
-        console.log("Switching to page...", page, "63");
-        const render = new Render(this.target, this);
+        // console.log("Switching to page...", page, "63");
+        // const render = new Render(this.target, this);
+        // console.log(this.target, this.render, 74);
         if (page <= 3) {
-            render.loadPageOfQuestions(
+            this.render.loadPageOfQuestions(
                 this.getQuestionsFromPage(page),
                 page,
                 this.hobbies
             );
-            render.attachEventListenersForPage(page);
+            this.render.attachEventListenersForPage(page);
             this.page = page;
         } else if (page === 4) {
-            render.loadUserData(this.getUserData());
+            this.render.loadUserData(this.getUserData());
         }
     }
 
@@ -137,6 +139,7 @@ class Form {
             this.hobbies = newHobbies;
             // setValidationError("");
         }
+        this.render.colourSelectedHobbiesGreen(this.hobbies);
     }
 
     setDrivesCar(drives) {
@@ -156,7 +159,7 @@ class Render {
     }
 
     loadPageOfQuestions(questions, page, currentHobbies) {
-        console.log("loading pg of questions", questions, 155);
+        // console.log("loading pg of questions", questions, 155);
         let html = questions
             .map((q) => {
                 if (q.type === "text") {
@@ -204,7 +207,7 @@ class Render {
         const buttons = this.makeButtons(page);
         html = header + html + buttons;
         // console.log(html, "189rm");
-
+        // console.log(this.target, 209);
         this.target.innerHTML = html;
     }
 
@@ -255,26 +258,26 @@ class Render {
     }
 
     attachEventListenersForPage(page) {
-        console.log("attaching event listeners...", this.form);
+        // console.log("attaching event listeners...", this.form);
         const form = this.form;
         if (page === 1) {
             // order is always the same: event listeners for form inputs, then next/back btn
             const textInputs = document.getElementsByTagName("input");
             textInputs[0].addEventListener("input", function (event) {
                 form.setFirstName(event.target.value);
-                console.log(event.target.value, 255);
+                // console.log(event.target.value, 255);
                 // handleInput(event.target.value);
             });
             textInputs[1].addEventListener("input", function (event) {
                 form.setLastName(event.target.value);
-                console.log(event.target.value, 255);
+                // console.log(event.target.value, 255);
                 // handleInput(event.target.value);
             });
             // establish btns
             const nextBtn = document.getElementById("nextBtn");
-            console.log("adding event listener, for real", nextBtn);
+            // console.log("adding event listener, for real", nextBtn);
             nextBtn.addEventListener("click", function () {
-                console.log("trying to switch to page...", page + 1);
+                // console.log("trying to switch to page...", page + 1);
                 form.switchToPage(page + 1);
             });
         } else if (page === 2) {
@@ -289,6 +292,7 @@ class Render {
                     form.setHobbies(event.target.innerHTML);
                 });
             }
+            // special event listeners to color form box green if it is selected.
             // establish btns
             const nextBtn = document.getElementById("nextBtn");
             nextBtn.addEventListener("click", function () {
@@ -328,6 +332,33 @@ class Render {
             });
         } else {
             throw new Error("Page index out of range");
+        }
+    }
+
+    colourSelectedHobbiesGreen(currentHobbies) {
+        const hobbyChoices =
+            document.getElementsByClassName("multiSelectOption");
+        for (let i = 0; i < hobbyChoices.length; i++) {
+            const choice = hobbyChoices[i].childNodes[1].innerHTML;
+            const parentEl = hobbyChoices[i].parentElement;
+            const boxToColorGreen = parentEl.childNodes[1].childNodes[1];
+            // console.log(choice, parentEl, 343);
+            // console.log(boxToColorGreen, 346);
+            console.log(currentHobbies, choice, 347);
+            if (currentHobbies.includes(choice)) {
+                console.log("adding class... 348");
+                boxToColorGreen.classList.add("bg-lime-400");
+            } else if (!currentHobbies.includes(choice)) {
+                console.log("removing class... 354");
+                boxToColorGreen.classList.remove("bg-lime-400");
+            } else {
+                console.log(
+                    "you shouldn't be able to get here you know",
+                    currentHobbies,
+                    choice,
+                    hobbyChoices[i]
+                );
+            }
         }
     }
 
@@ -395,7 +426,7 @@ class Render {
 
     multiSelect(query, options, previousValue, inputHandler, selections) {
         // TODO: Render multiSelect with id="someId" and attach "ifValidReportInput" as click event listener to appropriate spot
-        console.log(selections, options, 398);
+        console.log(selections, options, 428);
         return `
             <div class="flex flex-col">
                 <div>
@@ -410,11 +441,7 @@ class Render {
                                 >
                                     <div class="flex flex-col justify-center items-center">
                                         <div
-                                            class="p-2 h-4 w-4 border-2 border-black ${
-                                                selections.includes(option)
-                                                    ? "bg-lime-400"
-                                                    : ""
-                                            }"
+                                            class="p-2 h-4 w-4 border-2 border-black"
                                         ></div>
                                     </div>
                                     <div class="p-2 multiSelectOption">

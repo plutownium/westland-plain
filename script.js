@@ -1,7 +1,7 @@
 const main = document.getElementsByTagName("main")[0];
 console.log("script connected");
-const form = new Form();
-form.target = main;
+const form = new Form(main);
+console.log(main, 4);
 
 form.switchToPage(1);
 
