@@ -42,8 +42,7 @@ class Render {
                         q.query,
                         q.options,
                         q.previousValue,
-                        q.inputHandler
-                        // todo: add radio btn value
+                        questions[0].previousValue // note: can only do this because it's a small app.
                     );
                 } else {
                     throw new Error("question type not supported");
@@ -251,7 +250,7 @@ class Render {
                                 previousValue !== null ? previousValue : ""
                             }"
                             type="text"
-                            onChange="${inputHandler}"
+                            onchange="${inputHandler}"
                         />
                     </div>
                 </div>
@@ -271,7 +270,7 @@ class Render {
                 <select
                     id="singleSelect"
                     class="border-2 border-black w-40 h-8"
-                    onChange=${inputHandler}
+                    onchange=${inputHandler}
                 >
                     <option value=""></option>
                     ${options
@@ -296,7 +295,7 @@ class Render {
         `;
     }
 
-    multiSelect(query, options, previousValue, inputHandler, selections) {
+    multiSelect(query, options, previousValue, selections) {
         return `
             <div class="flex flex-col">
                 <div>
@@ -340,8 +339,8 @@ class Render {
     }
 
     radioSelect(query, options, previousValue) {
-        const valueToCheck =
-            previousValue === null ? null : previousValue ? "Yes" : "No";
+        // const valueToCheck =
+        //     previousValue === null ? null : previousValue ? "Yes" : "No";
         // TODO: Render multiSelect with id="someId" and attach "inputHandler" as click event listener to appropriate spot
         console.log(query, options, "prevValue:", previousValue, 321);
         // checked="${valueToCheck === option}"
@@ -386,10 +385,11 @@ class Render {
 
     dropdown(query, options, previousValue, radioBtnValue) {
         console.log(options, previousValue, radioBtnValue, 387);
+
         return `
             <div id="dropdownContainer" class="w-auto flex flex-col items-center ${
                 radioBtnValue === "Yes" ? "" : "hidden"
-            }>
+            }">
                 <div>
                     <h3 class="w-fit">${query}</h3>
                     <div class="w-52">
@@ -400,9 +400,19 @@ class Render {
                         >
                             <option value=""></option>
                             ${options.map((option) => {
+                                console.log(
+                                    option,
+                                    previousValue,
+                                    option.toString() === previousValue
+                                        ? "selected"
+                                        : "",
+                                    388
+                                );
                                 return `
                                     <option value="${option}" ${
-                                    option === previousValue ? "selected" : ""
+                                    option.toString() === previousValue
+                                        ? "selected"
+                                        : ""
                                 }>
                                         ${option}
                                     </option>

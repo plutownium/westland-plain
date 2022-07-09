@@ -131,9 +131,7 @@ class Form {
     }
 
     setHobbies(hobby) {
-        // console.log(this.hobbies, 126);
         if (this.hobbies.includes(hobby)) {
-            console.log("Removing hobby... 137", hobby);
             // remove from list
             const withoutUncheckedValue = this.hobbies.filter(
                 (h) => h !== hobby
@@ -148,7 +146,6 @@ class Form {
             this.hobbies = newHobbies;
             // setValidationError("");
         }
-        console.log(this.hobbies, 143);
         this.questionSetTwo[1].previousValue = this.hobbies;
         this.render.colourSelectedHobbiesGreen(this.hobbies);
     }
