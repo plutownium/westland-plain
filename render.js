@@ -58,7 +58,15 @@ class Render {
         this.target.innerHTML = html;
     }
 
-    loadUserData(inputs) {}
+    loadUserData(inputs, page) {
+        let html = `
+            <div>
+                ${JSON.stringify(inputs)}
+            </div>
+        `;
+        const header = this.makeHeader(page);
+        this.target.innerHTML = header + html;
+    }
 
     test() {
         console.log("in test");
@@ -182,10 +190,9 @@ class Render {
             });
             // establish btns
             const submitBtn = document.getElementById("submitBtn");
-            submitBtn.addEventListener(
-                "click",
-                this.form.switchToPage(page + 1)
-            );
+            submitBtn.addEventListener("click", function () {
+                form.switchToPage(page + 1);
+            });
             const backBtn = document.getElementById("backBtn");
             backBtn.addEventListener("click", function () {
                 form.switchToPage(page - 1);
