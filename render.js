@@ -95,8 +95,7 @@ class Render {
         }
     }
 
-    makeBtn(type, toPage) {
-        // TODO: make "toPage" inform onClick value
+    makeBtn(type) {
         if (type === "empty") {
             return `
                 <div id="emptyBtn" class="w-14 h-11"></div>
@@ -149,19 +148,8 @@ class Render {
             for (let i = 0; i < multiLineSelect.length; i++) {
                 multiLineSelect[i].addEventListener("click", function (event) {
                     form.setHobbies(event.target.innerHTML);
-                    // multiLineSelect[i].classList.
-                    // var old_element = multiLineSelect[i];
-                    // var new_element = old_element.cloneNode(true);
-                    // old_element.parentNode.replaceChild(
-                    //     new_element,
-                    //     old_element
-                    // );
-                    // new_element.addEventListener("click", function (event) {
-                    //     form.setHobbies(event.target.innerHTML);
-                    // });
                 });
             }
-            // special event listeners to color form box green if it is selected.
             // establish btns
             const nextBtn = document.getElementById("nextBtn");
             nextBtn.addEventListener("click", function () {
@@ -219,14 +207,12 @@ class Render {
         const boxesToColor = document.getElementsByClassName(
             "multiSelectCheckBox"
         );
-        console.log(boxesToColor, boxesToColor.length, 362);
         // reset box color if present because we want the process of adding bg color to start with a fresh list
         for (let i = 0; i < boxesToColor.length; i++) {
             boxesToColor[i].classList.remove("bg-lime-400");
         }
         for (let i = 0; i < boxesToColor.length; i++) {
             const choice = boxesToColor[i].id;
-            console.log(choice, currentHobbies, 365);
             if (currentHobbies.includes(choice)) {
                 boxesToColor[i].classList.add("bg-lime-400");
             }
@@ -235,6 +221,7 @@ class Render {
 
     // query, options, previousValue, inputHandler, validationError
     textInput(query, previousValue, inputHandler) {
+        console.log(previousValue, 226);
         return `
             <div class="w-40 pl-1 flex flex-col">
                 <div>
@@ -260,6 +247,12 @@ class Render {
     }
 
     singleSelect(query, options, previousValue, inputHandler) {
+        console.log(
+            options,
+            previousValue,
+
+            252
+        );
         return `
         <div class="flex flex-col">
             <div>
@@ -269,20 +262,20 @@ class Render {
                     class="border-2 border-black w-40 h-8"
                     onChange=${inputHandler}
                     defaultValue="${
-                        previousValue === null
-                            ? ""
-                            : previousValue
-                            ? "Yes"
-                            : "No"
+                        previousValue === null ? "" : previousValue
                     }"
                 >
                     <option value=""></option>
                     ${options
                         .map((option) => {
+                            console.log(
+                                previousValue === option ? "selected" : false,
+                                271
+                            );
                             return `
-                            <option value="${option}">
-                            ${option}
-                            </option>
+                            <option value="${option}" selected="${
+                                option === "Yes" ? "selected" : null
+                            }">${option}</option>
                         `;
                         })
                         .join("")}
@@ -296,8 +289,6 @@ class Render {
     }
 
     multiSelect(query, options, previousValue, inputHandler, selections) {
-        // TODO: Render multiSelect with id="someId" and attach "ifValidReportInput" as click event listener to appropriate spot
-        console.log(selections, options, 428);
         return `
             <div class="flex flex-col">
                 <div>
@@ -305,10 +296,6 @@ class Render {
                     <div>
                         ${options
                             .map((option, index) => {
-                                // return `
-                                //     <input class="p-2 multiSelectOption" type="checkbox" id="checkbox${index}" name="${option}" value="${option}">
-                                //     <label for="${option}"> ${option}</label><br>
-                                // `
                                 return `
                                 <div
                                     id="highlightBoxOuter${index}"
@@ -317,7 +304,15 @@ class Render {
                                 >
                                     <div class="flex flex-col justify-center items-center">
                                         <div id="${option}"
-                                            class="p-2 h-4 w-4 border-2 border-black multiSelectCheckBox"
+                                            class="p-2 h-4 w-4 border-2 border-black multiSelectCheckBox ${
+                                                previousValue
+                                                    ? previousValue.includes(
+                                                          option
+                                                      )
+                                                        ? " bg-lime-400"
+                                                        : null
+                                                    : null
+                                            }"
                                         ></div>
                                     </div>
                                     <div class="p-2 multiSelectOption">
@@ -340,7 +335,7 @@ class Render {
         const valueToCheck =
             previousValue === null ? null : previousValue ? "Yes" : "No";
         // TODO: Render multiSelect with id="someId" and attach "inputHandler" as click event listener to appropriate spot
-        console.log(query, options, previousValue, 321);
+        console.log(query, options, "prevValue:", previousValue, 321);
         // checked="${valueToCheck === option}"
         return `
             <div class="flex flex-col">

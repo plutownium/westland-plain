@@ -117,14 +117,17 @@ class Form {
 
     setFirstName(name) {
         this.firstName = name;
+        this.questionSetOne[0].previousValue = name;
     }
 
     setLastName(name) {
         this.lastName = name;
+        this.questionSetOne[1].previousValue = name;
     }
 
     setHasChildren(hasChildren) {
         this.hasChildren = hasChildren;
+        this.questionSetTwo[0].previousValue = hasChildren;
     }
 
     setHobbies(hobby) {
@@ -146,14 +149,17 @@ class Form {
             // setValidationError("");
         }
         console.log(this.hobbies, 143);
+        this.questionSetTwo[1].previousValue = this.hobbies;
         this.render.colourSelectedHobbiesGreen(this.hobbies);
     }
 
     setDrivesCar(drives) {
         this.drives = drives;
+        this.questionSetThree[0].previousValue = drives;
     }
 
     setYearsExperience(years) {
         this.yearsExp = years;
+        this.questionSetThree[1].previousValue = years;
     }
 }
