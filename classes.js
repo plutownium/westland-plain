@@ -1,6 +1,6 @@
 class Form {
-    firstName = null;
-    lastName = null;
+    firstName = "";
+    lastName = "";
     hasChildren = null;
     hobbies = [];
     drivesCar = null;
@@ -60,10 +60,16 @@ class Form {
     }
 
     switchToPage(page) {
-        const render = new Render(this.target);
+        console.log("Switching to page...", page, "63");
+        const render = new Render(this.target, this);
         if (page <= 3) {
-            console.log("switched to page...", page);
-            render.loadQuestions(this.getQuestionsFromPage(this.page));
+            render.loadPageOfQuestions(
+                this.getQuestionsFromPage(page),
+                page,
+                this.hobbies
+            );
+            render.attachEventListenersForPage(page);
+            this.page = page;
         } else if (page === 4) {
             render.loadUserData(this.getUserData());
         }
@@ -133,14 +139,23 @@ class Form {
     }
 }
 
+// class Page {
+//     constructor(pageNum, questions) {
+//         this.pageNum = pageNum;
+//         this.questions = questions;
+//     }
+// }
+
 class Render {
     // text, single-select, multi-select, radio, dropdown
-    constructor(target) {
+    constructor(target, form) {
         this.target = target;
+        this.form = form;
     }
 
-    loadQuestions(questions) {
-        const html = questions.map((q) => {
+    loadPageOfQuestions(questions, page, currentHobbies) {
+        console.log("loading pg of questions", questions, 155);
+        let html = questions.map((q) => {
             if (q.type === "text") {
                 return this.textInput(q.query, q.previousValue, q.inputHandler);
             } else if (q.type === "single-select") {
@@ -155,7 +170,8 @@ class Render {
                     q.query,
                     q.options,
                     q.previousValue,
-                    q.inputHandler
+                    q.inputHandler,
+                    currentHobbies
                 );
             } else if (q.type === "radio") {
                 return this.radioSelect(
@@ -176,11 +192,90 @@ class Render {
             }
         });
 
+        const header = this.makeHeader(page);
+        const buttons = this.makeButtons(page);
+        console.log(buttons, "189rm");
+        html = header + html + buttons;
+
         this.target.innerHTML = html;
-        console.log(this.target, "165rm");
     }
 
     loadUserData(inputs) {}
+
+    test() {
+        console.log("in test");
+    }
+
+    makeHeader(page) {
+        return `
+            <div>
+                <h2>Page ${page}</h2>
+            </div>
+        `;
+    }
+
+    makeButtons(page) {
+        if (page === 1) {
+            return this.makeBtn("empty", 1) + this.makeBtn("next", 2);
+        } else if (page === 2) {
+            return this.makeBtn("back", 2) + this.makeBtn("next", 3);
+        } else if (page === 3) {
+            return this.makeBtn("back", 3) + this.makeBtn("submit", 4);
+        } else {
+            throw new Error("page index out of range or wasn't provided");
+        }
+    }
+
+    makeBtn(type, toPage) {
+        // TODO: make "toPage" inform onClick value
+        if (type === "empty") {
+            return `
+                <div id="emptyBtn" className="w-14 h-11"></div>
+            `;
+        }
+        return `
+            <div>
+                <div id="${type}Btn">
+                    <button 
+                        class="m-2 p-2 border-2 border-gray-300 text-gray-300 text-md rounded-md"
+                    >
+                    <span class="${type}Btn text-gray-400">${type}</span>
+                </button>
+                </div>
+            </div>
+    `;
+    }
+
+    attachEventListenersForPage(page) {
+        console.log("attaching event listeners...", this.form);
+        if (page === 1) {
+            const form = this.form;
+            const nextBtn = document.getElementById("nextBtn");
+            console.log("adding event listener, for real", nextBtn);
+            nextBtn.addEventListener("click", function () {
+                console.log("trying to switch to page...", page + 1);
+                form.switchToPage(page + 1);
+            });
+        } else if (page === 2) {
+            const nextBtn = document.getElementById("nextBtn");
+            nextBtn.addEventListener("click", this.form.switchToPage(page + 1));
+            const backBtn = document.getElementById("backBtn");
+            backBtn.addEventListener("click", this.form.switchToPage(page - 1));
+        } else if (page === 3) {
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.addEventListener(
+                "click",
+                this.form.switchToPage(page + 1)
+            );
+            const backBtn = document.getElementById("backBtn");
+            backBtn.addEventListener("click", this.form.switchToPage(page - 1));
+        } else if (page === 4) {
+            const backBtn = document.getElementById("backBtn");
+            backBtn.addEventListener("click", this.form.switchToPage(page - 1));
+        } else {
+            throw new Error("Page index out of range");
+        }
+    }
 
     // query, options, previousValue, inputHandler, validationError
     textInput(query, previousValue, inputHandler) {
@@ -193,7 +288,9 @@ class Render {
                     <div className="h-12 flex">
                         <input
                             className="h-8 w-36 my-1 py-1 pl-2 border-2 border-gray-300"
-                            value="${previousValue}"
+                            value="${
+                                previousValue !== null ? previousValue : ""
+                            }"
                             type="text"
                             onChange="${inputHandler}"
                         />
@@ -239,7 +336,7 @@ class Render {
         `;
     }
 
-    multiSelect(query, options, previousValue, inputHandler) {
+    multiSelect(query, options, previousValue, inputHandler, selections) {
         // TODO: Render multiSelect with id="someId" and attach "ifValidReportInput" as click event listener to appropriate spot
         return `
             <div className="flex flex-col">
