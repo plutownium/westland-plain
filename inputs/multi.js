@@ -48,4 +48,42 @@ class singleSelect {
             </div>
         `;
     }
+
+    setupInputCommunication(element, handler) {
+        for (let i = 0; i < multiLineSelect.length; i++) {
+            element[i].addEventListener("click", function (event) {
+                const parentOfValidationErrorNode = document.getElementById(
+                    "multiSelectContainer"
+                ).parentElement;
+                const validationErrorEl =
+                    parentOfValidationErrorNode.childNodes[3];
+                console.log(validationErrorEl, 159);
+                validationErrorEl.innerHTML = "Bowls";
+                handler(event.target.innerHTML);
+            });
+        }
+        const multiLineSelectTickboxes = document.getElementsByClassName(
+            "multiSelectCheckBoxContainer"
+        );
+        for (let i = 0; i < multiLineSelectTickboxes.length; i++) {
+            multiLineSelectTickboxes[i].addEventListener(
+                "click",
+                function (event) {
+                    const choice =
+                        multiLineSelectTickboxes[i].parentNode.childNodes[3]
+                            .childNodes[1].innerHTML;
+                    console.log(choice, 162);
+                    // FIXME: clicking between checkbox and choice adds strange "\nMusic\n" to hobbies
+                    const parentOfValidationErrorNode = document.getElementById(
+                        "multiSelectContainer"
+                    ).parentElement;
+                    const validationErrorEl =
+                        parentOfValidationErrorNode.childNodes[3];
+                    console.log(validationErrorEl, 159);
+                    validationErrorEl.innerHTML = "Bowls";
+                    handler(choice);
+                }
+            );
+        }
+    }
 }

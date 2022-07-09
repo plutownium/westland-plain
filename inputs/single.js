@@ -42,4 +42,15 @@ class singleSelect {
             </div>
         `;
     }
+
+    setupInputCommunication(element, handler) {
+        element.addEventListener("change", function (event) {
+            const parentOfValidationErrorNode =
+                element.parentElement.parentElement;
+            const validationErrorEl = parentOfValidationErrorNode.childNodes[3];
+            console.log(validationErrorEl, 159);
+            validationErrorEl.innerHTML = "Spoons";
+            handler(event.target.value);
+        });
+    }
 }

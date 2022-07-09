@@ -44,4 +44,6 @@ class radioSelect {
             </div>
         `;
     }
+
+    setupInputCommunication(element, handler) {}
 }

@@ -116,88 +116,30 @@ class Render {
     }
 
     attachEventListenersForPage(page) {
-        // console.log("attaching event listeners...", this.form);
-        // TODO: refactor this entire thing into objects
         const form = this.form;
         if (page === 1) {
             // order is always the same: event listeners for form inputs, then next/back btn
             const textInputs = document.getElementsByTagName("input");
-            textInput().setupInputCommunication(
-                textInput[0],
-                form.setFirstName,
-                "placeholder"
-            );
-            textInput().setupInputCommunication(
-                textInputs[1],
-                form.setLastName,
-                "placeholder"
-            );
-            // textInputs[1].addEventListener("input", function (event) {
-            //     form.setLastName(event.target.value);
-            //     const parentOfValidationErrorNode =
-            //         textInputs[1].parentElement.parentElement.parentElement;
-            //     const validationErrorEl =
-            //         parentOfValidationErrorNode.childNodes[3];
-            //     console.log(validationErrorEl, 127);
-            //     validationErrorEl.innerHTML = "Hats";
-            // });
+            const init = new textInput();
+            init.setupInputCommunication(textInputs[0], form.setFirstName);
+            init.setupInputCommunication(textInputs[1], form.setLastName);
             // establish btns
             const nextBtn = document.getElementById("nextBtn");
-            // console.log("adding event listener, for real", nextBtn);
             nextBtn.addEventListener("click", function () {
-                // console.log("trying to switch to page...", page + 1);
                 form.switchToPage(page + 1);
             });
         } else if (page === 2) {
-            // TODO: If hobbies option is selected, replace the evt listener with a "remove hobby" evt listener
             const singleLineSelect = document.getElementById("singleSelect");
-            singleLineSelect.addEventListener("change", function (event) {
-                form.setHasChildren(event.target.value);
-                const parentOfValidationErrorNode =
-                    singleLineSelect.parentElement.parentElement;
-                const validationErrorEl =
-                    parentOfValidationErrorNode.childNodes[3];
-                console.log(validationErrorEl, 159);
-                validationErrorEl.innerHTML = "Spoons";
-            });
+            new singleSelect().setupInputCommunication(
+                singleLineSelect,
+                form.setHasChildren
+            );
             const multiLineSelect =
                 document.getElementsByClassName("multiSelectOption");
-            for (let i = 0; i < multiLineSelect.length; i++) {
-                multiLineSelect[i].addEventListener("click", function (event) {
-                    form.setHobbies(event.target.innerHTML);
-                    const parentOfValidationErrorNode = document.getElementById(
-                        "multiSelectContainer"
-                    ).parentElement;
-                    const validationErrorEl =
-                        parentOfValidationErrorNode.childNodes[3];
-                    console.log(validationErrorEl, 159);
-                    validationErrorEl.innerHTML = "Bowls";
-                });
-            }
-            const multiLineSelectTickboxes = document.getElementsByClassName(
-                "multiSelectCheckBoxContainer"
+            new multiSelect().setupInputCommunication(
+                multiLineSelect,
+                form.setHobbies
             );
-            for (let i = 0; i < multiLineSelectTickboxes.length; i++) {
-                multiLineSelectTickboxes[i].addEventListener(
-                    "click",
-                    function (event) {
-                        const choice =
-                            multiLineSelectTickboxes[i].parentNode.childNodes[3]
-                                .childNodes[1].innerHTML;
-                        console.log(choice, 162);
-                        form.setHobbies(choice);
-                        // FIXME: clicking between checkbox and choice adds strange "\nMusic\n" to hobbies
-                        const parentOfValidationErrorNode =
-                            document.getElementById(
-                                "multiSelectContainer"
-                            ).parentElement;
-                        const validationErrorEl =
-                            parentOfValidationErrorNode.childNodes[3];
-                        console.log(validationErrorEl, 159);
-                        validationErrorEl.innerHTML = "Bowls";
-                    }
-                );
-            }
             // establish btns
             const nextBtn = document.getElementById("nextBtn");
             nextBtn.addEventListener("click", function () {

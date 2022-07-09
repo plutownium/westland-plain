@@ -33,13 +33,13 @@ class textInput {
         `;
     }
 
-    static setupInputCommunication(element, handler, validation) {
+    setupInputCommunication(element, handler) {
         element.addEventListener("input", function (event) {
+            console.log(event.target.value, 43);
             handler(event.target.value);
             const parentOfValidationErrorNode =
                 element.parentElement.parentElement.parentElement;
             const validationErrorEl = parentOfValidationErrorNode.childNodes[3];
-            console.log(validationErrorEl, 127);
             validationErrorEl.innerHTML = "Hats";
         });
     }

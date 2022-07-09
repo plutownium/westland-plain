@@ -115,22 +115,24 @@ class Form {
         this.page = page;
     }
 
-    setFirstName(name) {
+    setFirstName = (name) => {
+        console.log(name, 119);
         this.firstName = name;
         this.questionSetOne[0].previousValue = name;
-    }
+    };
 
-    setLastName(name) {
+    setLastName = (name) => {
+        console.log(name, 125);
         this.lastName = name;
         this.questionSetOne[1].previousValue = name;
-    }
+    };
 
-    setHasChildren(hasChildren) {
+    setHasChildren = (hasChildren) => {
         this.hasChildren = hasChildren;
         this.questionSetTwo[0].previousValue = hasChildren;
-    }
+    };
 
-    setHobbies(hobby) {
+    setHobbies = (hobby) => {
         if (this.hobbies.includes(hobby)) {
             // remove from list
             const withoutUncheckedValue = this.hobbies.filter(
@@ -148,16 +150,16 @@ class Form {
         }
         this.questionSetTwo[1].previousValue = this.hobbies;
         this.render.colourSelectedHobbiesGreen(this.hobbies);
-    }
+    };
 
-    setDrivesCar(drives) {
+    setDrivesCar = (drives) => {
         console.log("setting drives...", 154, drives);
         this.drivesCar = drives;
         this.questionSetThree[0].previousValue = drives;
-    }
+    };
 
-    setYearsExperience(years) {
+    setYearsExperience = (years) => {
         this.yearsExp = years;
         this.questionSetThree[1].previousValue = years;
-    }
+    };
 }
