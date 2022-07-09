@@ -261,9 +261,6 @@ class Render {
                     id="singleSelect"
                     class="border-2 border-black w-40 h-8"
                     onChange=${inputHandler}
-                    defaultValue="${
-                        previousValue === null ? "" : previousValue
-                    }"
                 >
                     <option value=""></option>
                     ${options
@@ -273,9 +270,9 @@ class Render {
                                 271
                             );
                             return `
-                            <option value="${option}" selected="${
-                                option === "Yes" ? "selected" : null
-                            }">${option}</option>
+                            <option value="${option}" ${
+                                previousValue === option ? "selected" : ""
+                            }>${option}</option>
                         `;
                         })
                         .join("")}
