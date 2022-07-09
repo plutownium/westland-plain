@@ -139,13 +139,6 @@ class Form {
     }
 }
 
-// class Page {
-//     constructor(pageNum, questions) {
-//         this.pageNum = pageNum;
-//         this.questions = questions;
-//     }
-// }
-
 class Render {
     // text, single-select, multi-select, radio, dropdown
     constructor(target, form) {
@@ -230,7 +223,7 @@ class Render {
         // TODO: make "toPage" inform onClick value
         if (type === "empty") {
             return `
-                <div id="emptyBtn" className="w-14 h-11"></div>
+                <div id="emptyBtn" class="w-14 h-11"></div>
             `;
         }
         return `
@@ -239,8 +232,8 @@ class Render {
                     <button 
                         class="m-2 p-2 border-2 border-gray-300 text-gray-300 text-md rounded-md"
                     >
-                    <span class="${type}Btn text-gray-400">${type}</span>
-                </button>
+                        <span class="${type}Btn text-gray-400">${type}</span>
+                    </button>
                 </div>
             </div>
     `;
@@ -248,8 +241,8 @@ class Render {
 
     attachEventListenersForPage(page) {
         console.log("attaching event listeners...", this.form);
+        const form = this.form;
         if (page === 1) {
-            const form = this.form;
             const nextBtn = document.getElementById("nextBtn");
             console.log("adding event listener, for real", nextBtn);
             nextBtn.addEventListener("click", function () {
@@ -258,9 +251,13 @@ class Render {
             });
         } else if (page === 2) {
             const nextBtn = document.getElementById("nextBtn");
-            nextBtn.addEventListener("click", this.form.switchToPage(page + 1));
+            nextBtn.addEventListener("click", function () {
+                form.switchToPage(page + 1);
+            });
             const backBtn = document.getElementById("backBtn");
-            backBtn.addEventListener("click", this.form.switchToPage(page - 1));
+            backBtn.addEventListener("click", function () {
+                form.switchToPage(page - 1);
+            });
         } else if (page === 3) {
             const submitBtn = document.getElementById("submitBtn");
             submitBtn.addEventListener(
@@ -268,10 +265,14 @@ class Render {
                 this.form.switchToPage(page + 1)
             );
             const backBtn = document.getElementById("backBtn");
-            backBtn.addEventListener("click", this.form.switchToPage(page - 1));
+            backBtn.addEventListener("click", function () {
+                form.switchToPage(page - 1);
+            });
         } else if (page === 4) {
             const backBtn = document.getElementById("backBtn");
-            backBtn.addEventListener("click", this.form.switchToPage(page - 1));
+            backBtn.addEventListener("click", function () {
+                form.switchToPage(page - 1);
+            });
         } else {
             throw new Error("Page index out of range");
         }
@@ -280,14 +281,14 @@ class Render {
     // query, options, previousValue, inputHandler, validationError
     textInput(query, previousValue, inputHandler) {
         return `
-            <div className="w-40 pl-1 flex flex-col">
+            <div class="w-40 pl-1 flex flex-col">
                 <div>
-                    <div className="py-2">
-                        <h3 className="w-fit">${query}</h3>
+                    <div class="py-2">
+                        <h3 class="w-fit">${query}</h3>
                     </div>
-                    <div className="h-12 flex">
+                    <div class="h-12 flex">
                         <input
-                            className="h-8 w-36 my-1 py-1 pl-2 border-2 border-gray-300"
+                            class="h-8 w-36 my-1 py-1 pl-2 border-2 border-gray-300"
                             value="${
                                 previousValue !== null ? previousValue : ""
                             }"
@@ -305,11 +306,11 @@ class Render {
 
     singleSelect(query, options, previousValue, inputHandler) {
         return `
-        <div className="flex flex-col">
+        <div class="flex flex-col">
             <div>
                 <h3>${query}</h3>
                 <select
-                    className="border-2 border-black w-40 h-8"
+                    class="border-2 border-black w-40 h-8"
                     onChange=${inputHandler}
                     defaultValue="${
                         previousValue === null
@@ -339,28 +340,26 @@ class Render {
     multiSelect(query, options, previousValue, inputHandler, selections) {
         // TODO: Render multiSelect with id="someId" and attach "ifValidReportInput" as click event listener to appropriate spot
         return `
-            <div className="flex flex-col">
+            <div class="flex flex-col">
                 <div>
                     <h3>${query}</h3>
                     <div>
                         ${options.map((option) => {
                             return `
                                 <div
-                                    className="flex"
-                                    onClick={() => {
-                                        ifValidReportInput(option);
-                                    }}
+                                    class="flex"
+                                    class="multiSelectOption"
                                 >
-                                    <div className="flex flex-col justify-center items-center">
+                                    <div class="flex flex-col justify-center items-center">
                                         <div
-                                            className="p-2 h-4 w-4 border-2 border-black ${
+                                            class="p-2 h-4 w-4 border-2 border-black ${
                                                 selections.includes(option)
                                                     ? "bg-lime-400"
                                                     : ""
                                             }"
                                         ></div>
                                     </div>
-                                    <div className="p-2">
+                                    <div class="p-2">
                                         <p>${option}</p>
                                     </div>
                                 </div>
@@ -371,7 +370,7 @@ class Render {
                 <div id="validationErrorContainer">
                     
                 </div>
-            </div>>
+            </div>
         `;
     }
 
@@ -380,17 +379,14 @@ class Render {
             previousValue === null ? null : previousValue ? "Yes" : "No";
         // TODO: Render multiSelect with id="someId" and attach "inputHandler" as click event listener to appropriate spot
         return `
-            <div className="flex flex-col">
+            <div class="flex flex-col">
                 <div>
                     <h3>${query}</h3>
-                    <div className="mt-2 flex flex-col justify-start items-start">
+                    <div class="mt-2 flex flex-col justify-start items-start">
                         ${options.map((option) => {
                             return `
                                 <div
-                                    className="mb-1"
-                                    onClick={() => {
-                                        ifValidReportInput(option);
-                                    }}
+                                    class="mb-1 radioSelectOption"
                                 >
                                     <input
                                         type="radio"
@@ -399,7 +395,7 @@ class Render {
                                         value={option}
                                         checked="${valueToCheck === option}"
                                     />
-                                    <label className="ml-2" htmlFor="html">
+                                    <label class="ml-2" htmlFor="html">
                                         {option}
                                     </label>
                                 </div>
@@ -417,14 +413,14 @@ class Render {
     dropdown(query, options, previousValue, inputHandler) {
         // TODO: Render multiSelect with id="someId" and attach "inputHandler" as click event listener to appropriate spot
         return `
-            <div className="w-auto flex flex-col items-center">
+            <div class="w-auto flex flex-col items-center">
                 <div>
-                    <h3 className="w-fit">${query}</h3>
-                    <div className="w-52">
+                    <h3 class="w-fit">${query}</h3>
+                    <div class="w-52">
                         <select
-                            className="w-full"
-                            onChange="${ifValidReportInput}"
+                            class="w-full"
                             defaultValue="${previousValue}"
+                            onchange="test2()"
                         >
                             <option value=""></option>
                             ${options.map((option) => {
@@ -446,8 +442,8 @@ class Render {
 
     addValidationError(validationError) {
         return `
-            <div className="my-2">
-                <p className="text-red-500">${validationError}</p>
+            <div class="my-2">
+                <p class="text-red-500">${validationError}</p>
             </div>
         `;
     }

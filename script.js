@@ -8,3 +8,7 @@ form.switchToPage(1);
 function test() {
     console.log("in test..144");
 }
+
+function test2() {
+    console.log("test2");
+}
