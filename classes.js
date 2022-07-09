@@ -59,6 +59,14 @@ class Form {
         this.page = 1;
     }
 
+    explain() {
+        console.log(this, 63);
+    }
+
+    a() {
+        console.log("aaaaaaa");
+    }
+
     switchToPage(page) {
         console.log("Switching to page...", page, "63");
         const render = new Render(this.target, this);
@@ -115,6 +123,7 @@ class Form {
     }
 
     setHobbies(hobby) {
+        console.log(this.hobbies, 126);
         if (this.hobbies.includes(hobby)) {
             // remove from list
             const withoutUncheckedValue = hobbies.filter((h) => h !== hobby);
@@ -123,7 +132,7 @@ class Form {
                 // setValidationError();
             }
         } else {
-            const newHobbies = [...hobbies];
+            const newHobbies = [...this.hobbies];
             newHobbies.push(hobby);
             this.hobbies = newHobbies;
             // setValidationError("");
@@ -148,47 +157,53 @@ class Render {
 
     loadPageOfQuestions(questions, page, currentHobbies) {
         console.log("loading pg of questions", questions, 155);
-        let html = questions.map((q) => {
-            if (q.type === "text") {
-                return this.textInput(q.query, q.previousValue, q.inputHandler);
-            } else if (q.type === "single-select") {
-                return this.singleSelect(
-                    q.query,
-                    q.options,
-                    q.previousValue,
-                    q.inputHandler
-                );
-            } else if (q.type === "multi-select") {
-                return this.multiSelect(
-                    q.query,
-                    q.options,
-                    q.previousValue,
-                    q.inputHandler,
-                    currentHobbies
-                );
-            } else if (q.type === "radio") {
-                return this.radioSelect(
-                    q.query,
-                    q.options,
-                    q.previousValue,
-                    q.inputHandler
-                );
-            } else if (q.type === "dropdown") {
-                return this.dropdown(
-                    q.query,
-                    q.options,
-                    q.previousValue,
-                    q.inputHandler
-                );
-            } else {
-                throw new Error("question type not supported");
-            }
-        });
+        let html = questions
+            .map((q) => {
+                if (q.type === "text") {
+                    return this.textInput(
+                        q.query,
+                        q.previousValue,
+                        q.inputHandler
+                    );
+                } else if (q.type === "single-select") {
+                    return this.singleSelect(
+                        q.query,
+                        q.options,
+                        q.previousValue,
+                        q.inputHandler
+                    );
+                } else if (q.type === "multi-select") {
+                    return this.multiSelect(
+                        q.query,
+                        q.options,
+                        q.previousValue,
+                        q.inputHandler,
+                        currentHobbies
+                    );
+                } else if (q.type === "radio") {
+                    return this.radioSelect(
+                        q.query,
+                        q.options,
+                        q.previousValue,
+                        q.inputHandler
+                    );
+                } else if (q.type === "dropdown") {
+                    return this.dropdown(
+                        q.query,
+                        q.options,
+                        q.previousValue,
+                        q.inputHandler
+                    );
+                } else {
+                    throw new Error("question type not supported");
+                }
+            })
+            .join("");
 
         const header = this.makeHeader(page);
         const buttons = this.makeButtons(page);
-        console.log(buttons, "189rm");
         html = header + html + buttons;
+        // console.log(html, "189rm");
 
         this.target.innerHTML = html;
     }
@@ -243,6 +258,19 @@ class Render {
         console.log("attaching event listeners...", this.form);
         const form = this.form;
         if (page === 1) {
+            // order is always the same: event listeners for form inputs, then next/back btn
+            const textInputs = document.getElementsByTagName("input");
+            textInputs[0].addEventListener("input", function (event) {
+                form.setFirstName(event.target.value);
+                console.log(event.target.value, 255);
+                // handleInput(event.target.value);
+            });
+            textInputs[1].addEventListener("input", function (event) {
+                form.setLastName(event.target.value);
+                console.log(event.target.value, 255);
+                // handleInput(event.target.value);
+            });
+            // establish btns
             const nextBtn = document.getElementById("nextBtn");
             console.log("adding event listener, for real", nextBtn);
             nextBtn.addEventListener("click", function () {
@@ -250,6 +278,18 @@ class Render {
                 form.switchToPage(page + 1);
             });
         } else if (page === 2) {
+            const singleLineSelect = document.getElementById("singleSelect");
+            singleLineSelect.addEventListener("change", function (event) {
+                form.setHasChildren(event.target.value);
+            });
+            const multiLineSelect =
+                document.getElementsByClassName("multiSelectOption");
+            for (let i = 0; i < multiLineSelect.length; i++) {
+                multiLineSelect[i].addEventListener("click", function (event) {
+                    form.setHobbies(event.target.innerHTML);
+                });
+            }
+            // establish btns
             const nextBtn = document.getElementById("nextBtn");
             nextBtn.addEventListener("click", function () {
                 form.switchToPage(page + 1);
@@ -259,6 +299,19 @@ class Render {
                 form.switchToPage(page - 1);
             });
         } else if (page === 3) {
+            const radioBtns =
+                document.getElementsByClassName("radioSelectOption");
+            radioBtns[0].addEventListener("click", function (event) {
+                console.log(event.target.value, 297);
+            });
+            radioBtns[1].addEventListener("click", function (event) {
+                console.log(event.target.value, 300);
+            });
+            const yearsExpDropdown = document.getElementById("dropdown");
+            yearsExpDropdown.addEventListener("change", function (event) {
+                console.log(event.target.value, 303);
+            });
+            // establish btns
             const submitBtn = document.getElementById("submitBtn");
             submitBtn.addEventListener(
                 "click",
@@ -310,6 +363,7 @@ class Render {
             <div>
                 <h3>${query}</h3>
                 <select
+                    id="singleSelect"
                     class="border-2 border-black w-40 h-8"
                     onChange=${inputHandler}
                     defaultValue="${
@@ -321,13 +375,15 @@ class Render {
                     }"
                 >
                     <option value=""></option>
-                    ${options.map((option) => {
-                        return `
+                    ${options
+                        .map((option) => {
+                            return `
                             <option value="${option}">
                             ${option}
                             </option>
                         `;
-                    })}
+                        })
+                        .join("")}
                 </select>
             </div>
             <div id="validationErrorContainer">
@@ -339,16 +395,18 @@ class Render {
 
     multiSelect(query, options, previousValue, inputHandler, selections) {
         // TODO: Render multiSelect with id="someId" and attach "ifValidReportInput" as click event listener to appropriate spot
+        console.log(selections, options, 398);
         return `
             <div class="flex flex-col">
                 <div>
                     <h3>${query}</h3>
                     <div>
-                        ${options.map((option) => {
-                            return `
+                        ${options
+                            .map((option) => {
+                                return `
                                 <div
                                     class="flex"
-                                    class="multiSelectOption"
+                                    class=""
                                 >
                                     <div class="flex flex-col justify-center items-center">
                                         <div
@@ -359,12 +417,13 @@ class Render {
                                             }"
                                         ></div>
                                     </div>
-                                    <div class="p-2">
+                                    <div class="p-2 multiSelectOption">
                                         <p>${option}</p>
                                     </div>
                                 </div>
                                 `;
-                        })}
+                            })
+                            .join("")}
                     </div>
                 </div>
                 <div id="validationErrorContainer">
@@ -383,8 +442,9 @@ class Render {
                 <div>
                     <h3>${query}</h3>
                     <div class="mt-2 flex flex-col justify-start items-start">
-                        ${options.map((option) => {
-                            return `
+                        ${options
+                            .map((option) => {
+                                return `
                                 <div
                                     class="mb-1 radioSelectOption"
                                 >
@@ -396,11 +456,12 @@ class Render {
                                         checked="${valueToCheck === option}"
                                     />
                                     <label class="ml-2" htmlFor="html">
-                                        {option}
+                                        ${option}
                                     </label>
                                 </div>
                             `;
-                        })}
+                            })
+                            .join("")}
                     </div>
                 </div>
                 <div id="validationErrorContainer">
@@ -421,6 +482,7 @@ class Render {
                             class="w-full"
                             defaultValue="${previousValue}"
                             onchange="test2()"
+                            id="dropdown"
                         >
                             <option value=""></option>
                             ${options.map((option) => {
