@@ -43,6 +43,7 @@ class Render {
                         q.options,
                         q.previousValue,
                         q.inputHandler
+                        // todo: add radio btn value
                     );
                 } else {
                     throw new Error("question type not supported");
@@ -338,7 +339,7 @@ class Render {
         `;
     }
 
-    radioSelect(query, options, previousValue, inputHandler) {
+    radioSelect(query, options, previousValue) {
         const valueToCheck =
             previousValue === null ? null : previousValue ? "Yes" : "No";
         // TODO: Render multiSelect with id="someId" and attach "inputHandler" as click event listener to appropriate spot
@@ -360,6 +361,11 @@ class Render {
                                         id="${option}"
                                         name="drives"
                                         value="${option}"
+                                        ${
+                                            previousValue === option
+                                                ? "checked"
+                                                : ""
+                                        }
                                         
                                     />
                                     <label class="ml-2" htmlFor="html">
@@ -378,23 +384,26 @@ class Render {
         `;
     }
 
-    dropdown(query, options, previousValue, inputHandler) {
-        // TODO: Render multiSelect with id="someId" and attach "inputHandler" as click event listener to appropriate spot
+    dropdown(query, options, previousValue, radioBtnValue) {
+        console.log(options, previousValue, radioBtnValue, 387);
         return `
-            <div id="dropdownContainer" class="w-auto flex flex-col items-center hidden">
+            <div id="dropdownContainer" class="w-auto flex flex-col items-center ${
+                radioBtnValue === "Yes" ? "" : "hidden"
+            }>
                 <div>
                     <h3 class="w-fit">${query}</h3>
                     <div class="w-52">
                         <select
                             class="w-full"
-                            defaultValue="${previousValue}"
                             onchange="test2()"
                             id="dropdown"
                         >
                             <option value=""></option>
                             ${options.map((option) => {
                                 return `
-                                    <option value="${option}">
+                                    <option value="${option}" ${
+                                    option === previousValue ? "selected" : ""
+                                }>
                                         ${option}
                                     </option>
                                 `;
