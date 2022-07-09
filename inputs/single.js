@@ -49,8 +49,14 @@ class singleSelect {
                 element.parentElement.parentElement;
             const validationErrorEl = parentOfValidationErrorNode.childNodes[3];
             console.log(validationErrorEl, 159);
-            validationErrorEl.innerHTML = "Spoons";
-            handler(event.target.value);
+            const valid = new Validator().validHasChildren(event.target.value);
+            if (valid) {
+                handler(event.target.value);
+                validationErrorEl.innerHTML = "";
+            } else {
+                validationErrorEl.innerHTML =
+                    "Must indicate whether you are a parent";
+            }
         });
     }
 }

@@ -35,11 +35,17 @@ class textInput {
 
     setupInputCommunication(element, handler) {
         element.addEventListener("input", function (event) {
-            handler(event.target.value);
             const parentOfValidationErrorNode =
                 element.parentElement.parentElement.parentElement;
             const validationErrorEl = parentOfValidationErrorNode.childNodes[3];
-            validationErrorEl.innerHTML = "Hats";
+            const valid = new Validator().validName(event.target.value);
+            if (valid) {
+                handler(event.target.value);
+                validationErrorEl.innerHTML = "";
+            } else {
+                validationErrorEl.innerHTML =
+                    "Names must have at least two letters";
+            }
         });
     }
 }

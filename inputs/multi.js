@@ -57,9 +57,16 @@ class multiSelect {
                 ).parentElement;
                 const validationErrorEl =
                     parentOfValidationErrorNode.childNodes[3];
-                console.log(validationErrorEl, 159);
-                validationErrorEl.innerHTML = "Bowls";
-                handler(event.target.innerHTML);
+                const valid = new Validator().validDrivesCar(
+                    event.target.value
+                );
+                console.log("Ticked, 55", event.target.value);
+                if (valid) {
+                    handler(event.target.innerHTML);
+                } else {
+                    validationErrorEl.innerHTML =
+                        "Must select at least one hobby";
+                }
             });
         }
         const multiLineSelectTickboxes = document.getElementsByClassName(
@@ -79,9 +86,14 @@ class multiSelect {
                     ).parentElement;
                     const validationErrorEl =
                         parentOfValidationErrorNode.childNodes[3];
-                    console.log(validationErrorEl, 159);
-                    validationErrorEl.innerHTML = "Bowls";
-                    handler(choice);
+                    const valid = new Validator().validHobbies(choice);
+                    if (valid) {
+                        handler(event.target.innerHTML);
+                        validationErrorEl.innerHTML = "";
+                    } else {
+                        validationErrorEl.innerHTML =
+                            "Must select at least one hobby";
+                    }
                 }
             );
         }

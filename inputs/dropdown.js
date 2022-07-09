@@ -43,10 +43,18 @@ class dropdown {
 
     setupInputCommunication(element, handler) {
         element.addEventListener("change", function (event) {
-            handler(event.target.value);
             const validationErrorEl =
                 document.getElementById("dropdownContainer").childNodes[3];
-            validationErrorEl.innerHTML = "bar";
+            const valid = new Validator().validYearsExperience(
+                event.target.value
+            );
+            console.log(event.target.value, valid, 51);
+            if (valid) {
+                handler(event.target.value);
+                validationErrorEl.innerHTML = "";
+            } else {
+                validationErrorEl.innerHTML = "Must choose years of experience";
+            }
         });
     }
 }

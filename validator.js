@@ -1,11 +1,11 @@
 class Validator {
     // helper methods to validate form inputs
     validName(name) {
-        return name.length > 1;
+        return name.length >= 2;
     }
 
     validHasChildren(hasChildren) {
-        if (hasChildren === true || hasChildren === false) {
+        if (hasChildren == "Yes" || hasChildren == "No") {
             return true;
         } else {
             return false;
@@ -23,7 +23,7 @@ class Validator {
     }
 
     validDrivesCar(drives) {
-        if (drives === true || drives === false) {
+        if (drives == "Yes" || drives == "No") {
             return true;
         } else {
             return false;
@@ -31,10 +31,11 @@ class Validator {
     }
 
     validYearsExperience(years) {
-        if (years === null) {
-            return false;
-        } else {
+        console.log(typeof years, years.length, 34);
+        if (years.length > 0) {
             return true;
+        } else {
+            return false;
         }
     }
 }

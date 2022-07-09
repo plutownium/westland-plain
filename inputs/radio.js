@@ -51,9 +51,17 @@ class radioSelect {
                 const validationErrorEl = document.getElementById(
                     "radioSelectContainer"
                 ).childNodes[3];
-                validationErrorEl.innerHTML = "foo";
-                handler(event.target.value);
-                dropdown.classList.remove("hidden");
+                const valid = new Validator().validDrivesCar(
+                    event.target.value
+                );
+                if (valid) {
+                    dropdown.classList.remove("hidden");
+                    handler(event.target.value);
+                    validationErrorEl.innerHTML = "";
+                } else {
+                    validationErrorEl.innerHTML =
+                        "Must indicate whether you drive a car";
+                }
             }
         });
     }
@@ -61,8 +69,20 @@ class radioSelect {
     setupInputCommunicationWithHideDropdown(element, handler, dropdown) {
         element.addEventListener("click", function (event) {
             if (event.target.value) {
-                handler(event.target.value);
-                dropdown.classList.add("hidden");
+                const validationErrorEl = document.getElementById(
+                    "radioSelectContainer"
+                ).childNodes[3];
+                const valid = new Validator().validDrivesCar(
+                    event.target.value
+                );
+                if (valid) {
+                    dropdown.classList.add("hidden");
+                    handler(event.target.value);
+                    validationErrorEl.innerHTML = "";
+                } else {
+                    validationErrorEl.innerHTML =
+                        "Must indicate whether you drive a car";
+                }
             }
         });
     }
