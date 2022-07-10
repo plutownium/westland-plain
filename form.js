@@ -67,9 +67,6 @@ class Form {
     }
 
     switchToPage(page) {
-        // console.log("Switching to page...", page, "63");
-        // const render = new Render(this.target, this);
-        // console.log(this.target, this.render, 74);
         if (page <= 3) {
             this.render.loadPageOfQuestions(
                 this.getQuestionsFromPage(page),
@@ -82,7 +79,6 @@ class Form {
                 page
             );
         } else if (page === 4) {
-            console.log("load user data... 84");
             this.render.loadUserData(this.getUserData(), page);
             this.render.attachEventListenersForPage(page);
         }
@@ -107,7 +103,7 @@ class Form {
             hasChildren: this.hasChildren,
             hobbies: this.hobbies,
             drivesCar: this.drivesCar,
-            yearsExperience: this.yearsExp
+            yearsExperience: this.yearsExperience
         };
     }
 
@@ -141,7 +137,6 @@ class Form {
     setHobbies = (hobby) => {
         if (this.hobbies.includes(hobby)) {
             // remove from list
-            console.log("removing...", hobby);
             const withoutUncheckedValue = this.hobbies.filter(
                 (h) => h !== hobby
             );
@@ -150,7 +145,6 @@ class Form {
                 // setValidationError();
             }
         } else {
-            console.log("adding...", hobby);
             const newHobbies = [...this.hobbies];
             newHobbies.push(hobby);
             this.hobbies = newHobbies;
@@ -165,7 +159,6 @@ class Form {
     };
 
     setDrivesCar = (drives) => {
-        console.log("setting drives...", 154, drives);
         this.drivesCar = drives;
         this.questionSetThree[0].previousValue = drives;
         this.updateButtonState(3);
@@ -178,7 +171,6 @@ class Form {
     setYearsExperience = (years) => {
         this.yearsExperience = years;
         this.questionSetThree[1].previousValue = years;
-        console.log(years, 18181823231923498193);
         this.updateButtonState(3);
         this.render.updateNextBtn(
             this.nextBtnsForPage.filter((b) => b.page === 3)[0],
@@ -187,7 +179,6 @@ class Form {
     };
 
     updateButtonState(page) {
-        console.log("\n\n\n==\n==\n==IN UPDATE BTN STATE", page);
         const validator = new Validator();
         if (page === 1) {
             if (
@@ -208,12 +199,6 @@ class Form {
                 this.disableNextBtn(page);
             }
         } else if (page === 3) {
-            console.log(
-                this.drivesCar,
-                validator.validYearsExperience(this.yearsExperience),
-                this.yearsExperience,
-                210000000000000
-            );
             if (
                 (this.drivesCar === "Yes" &&
                     validator.validYearsExperience(this.yearsExperience)) ||
@@ -230,7 +215,6 @@ class Form {
 
     enableNextBtn(page) {
         const btn = this.nextBtnsForPage.filter((b) => b.page === page)[0];
-        console.log(btn, 218);
         btn.enabled = true;
     }
 

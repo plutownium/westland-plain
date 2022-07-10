@@ -77,7 +77,6 @@ class radioSelect {
                 );
                 handler(event.target.value);
                 if (valid) {
-                    console.log("ADDING HIDDEN CLASS ===================");
                     dropdown.classList.add("hidden");
                     validationErrorEl.innerHTML = "";
                 } else {

@@ -19,12 +19,6 @@ class singleSelect {
                         <option value=""></option>
                         ${this.options
                             .map((option) => {
-                                console.log(
-                                    this.previousValue === option
-                                        ? "selected"
-                                        : false,
-                                    271
-                                );
                                 return `
                                 <option value="${option}" ${
                                     this.previousValue === option
@@ -48,7 +42,6 @@ class singleSelect {
             const parentOfValidationErrorNode =
                 element.parentElement.parentElement;
             const validationErrorEl = parentOfValidationErrorNode.childNodes[3];
-            console.log(validationErrorEl, 159);
             const valid = new Validator().validHasChildren(event.target.value);
             handler(event.target.value);
             if (valid) {

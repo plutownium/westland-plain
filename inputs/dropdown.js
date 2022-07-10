@@ -47,7 +47,6 @@ class dropdown {
                 document.getElementById("dropdownContainer").childNodes[3];
             const yearsAsInteger = parseInt(event.target.value, 10);
             const valid = new Validator().validYearsExperience(yearsAsInteger);
-            console.log(yearsAsInteger, valid, "48rm");
             handler(yearsAsInteger);
             if (valid) {
                 validationErrorEl.innerHTML = "";

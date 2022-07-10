@@ -39,7 +39,6 @@ class Validator {
     }
 
     validYearsExperience(years) {
-        console.log(typeof years, years, 34);
         if (years !== null && years >= 0) {
             return true;
         } else {

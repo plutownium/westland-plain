@@ -10,7 +10,6 @@ class multiSelect {
     setHobby(hobby) {
         if (this.internalHobbies.includes(hobby)) {
             // remove from list
-            console.log("removing...", hobby);
             const withoutUncheckedValue = this.internalHobbies.filter(
                 (h) => h !== hobby
             );
@@ -19,7 +18,6 @@ class multiSelect {
                 // setValidationError();
             }
         } else {
-            console.log("adding...", hobby);
             const newHobbies = [...this.internalHobbies];
             newHobbies.push(hobby);
             this.internalHobbies = newHobbies;
@@ -92,25 +90,9 @@ class multiSelect {
                         multiThis.internalHobbies
                     )
                 ) {
-                    console.log(
-                        choice,
-                        multiThis.internalHobbies,
-                        validator.changeWouldYieldEmptyArray(
-                            choice,
-                            multiThis.internalHobbies
-                        )
-                    );
                     validationErrorEl.innerHTML =
                         "Must select at least one hobby";
                 } else {
-                    console.log(
-                        choice,
-                        multiThis.internalHobbies,
-                        validator.changeWouldYieldEmptyArray(
-                            choice,
-                            multiThis.internalHobbies
-                        )
-                    );
                     validationErrorEl.innerHTML = "";
                 }
                 multiThis.setHobby(choice);
@@ -126,8 +108,6 @@ class multiSelect {
                     const choice =
                         multiLineSelectTickboxes[i].parentNode.childNodes[3]
                             .childNodes[1].innerHTML;
-                    console.log(choice, 162);
-                    // FIXME: clicking between checkbox and choice adds strange "\nMusic\n" to hobbies
                     const parentOfValidationErrorNode = document.getElementById(
                         "multiSelectContainer"
                     ).parentElement;

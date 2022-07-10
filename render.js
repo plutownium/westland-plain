@@ -6,7 +6,6 @@ class Render {
     }
 
     loadPageOfQuestions(questions, page, currentHobbies) {
-        // console.log("loading pg of questions", questions, 155);
         let html = questions
             .map((q, index) => {
                 if (q.type === "text") {
@@ -54,8 +53,6 @@ class Render {
         const header = this.makeHeader(page);
         const buttons = `<div class="flex">${this.makeButtons(page)}</div>`;
         html = header + html + buttons;
-        // console.log(html, "189rm");
-        // console.log(this.target, 209);
         this.target.innerHTML = html;
     }
 
@@ -68,10 +65,6 @@ class Render {
         const header = this.makeHeader(page);
         const buttons = `<div class="flex">${this.makeButtons(page)}</div>`;
         this.target.innerHTML = header + html + buttons;
-    }
-
-    test() {
-        console.log("in test");
     }
 
     makeHeader(page) {
@@ -135,7 +128,6 @@ class Render {
             );
             const multiLineSelect =
                 document.getElementsByClassName("multiSelectOption");
-            console.log(form.hobbies, "138rm");
             const initMulti = new multiSelect();
             initMulti.setupInputCommunication(
                 multiLineSelect,
@@ -186,7 +178,6 @@ class Render {
         } else if (page === 4) {
             const backBtn = document.getElementById("backBtn");
             backBtn.addEventListener("click", function () {
-                console.log("in the back btn 206");
                 form.switchToPage(page - 1);
             });
         } else {
@@ -211,7 +202,6 @@ class Render {
     }
 
     updateNextBtn(button, page) {
-        console.log("...", button, page, 214);
         if (button.enabled) {
             let nextBtn;
             if (page === 3) {
@@ -219,7 +209,6 @@ class Render {
             } else {
                 nextBtn = document.getElementById("nextBtn");
             }
-            console.log("enabled");
             nextBtn.disabled = false;
             nextBtn.classList.add("border-black");
             nextBtn.classList.add("text-black");
@@ -234,7 +223,6 @@ class Render {
                     .classList.remove("text-gray-400");
             }
         } else {
-            console.log("dis");
             let nextBtn;
             if (page === 3) {
                 nextBtn = document.getElementById("submitBtn");
@@ -256,12 +244,4 @@ class Render {
             }
         }
     }
-
-    // addValidationError(validationError) {
-    //     return `
-    //         <div class="my-2">
-    //             <p class="text-red-500">${validationError}</p>
-    //         </div>
-    //     `;
-    // }
 }
