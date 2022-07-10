@@ -105,7 +105,7 @@ class Render {
         return `
             <div>
                 <div>
-                    <button id="${type}Btn"
+                    <button ${type === "next" ? "disabled" : ""} id="${type}Btn"
                         class="m-2 p-2 border-2 border-gray-300 text-gray-300 text-md rounded-md"
                     >
                         <span class="${type}Btn text-gray-400">${type}</span>
@@ -210,11 +210,22 @@ class Render {
         }
     }
 
-    addValidationError(validationError) {
-        return `
-            <div class="my-2">
-                <p class="text-red-500">${validationError}</p>
-            </div>
-        `;
+    updateBtns(button) {
+        console.log("...", button, 214);
+        if (button.enabled) {
+            console.log("enabled");
+            document.getElementById("nextBtn").disabled = false;
+        } else {
+            console.log("dis");
+            document.getElementById("nextBtn").disabled = true;
+        }
     }
+
+    // addValidationError(validationError) {
+    //     return `
+    //         <div class="my-2">
+    //             <p class="text-red-500">${validationError}</p>
+    //         </div>
+    //     `;
+    // }
 }

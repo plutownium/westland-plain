@@ -63,7 +63,7 @@ class multiSelect {
                             .join("")}
                     </div>
                 </div>
-                <div class="validationErrorContainer">
+                <div class="validationErrorContainer text-red-400 font-bold">
                     
                 </div>
             </div>
@@ -85,29 +85,17 @@ class multiSelect {
                     return; // pretend the click never happened
                 }
 
-                console.log(
-                    multiThis.internalHobbies,
-                    choice,
-                    currentHobbies,
-                    validator.changeWouldYieldEmptyArray(
-                        choice,
-                        currentHobbies
-                    ),
-                    63
-                );
                 if (
                     validator.changeWouldYieldEmptyArray(
                         choice,
                         multiThis.internalHobbies
                     )
                 ) {
-                    console.log("Text should read with error");
                     multiThis.setHobby(choice);
                     handler(choice);
                     validationErrorEl.innerHTML =
                         "Must select at least one hobby";
                 } else {
-                    console.log("no warning given");
                     multiThis.setHobby(choice);
                     handler(choice);
                     validationErrorEl.innerHTML = "";

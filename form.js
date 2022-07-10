@@ -55,17 +55,15 @@ class Form {
         }
     ];
 
+    nextBtnsForPage = [
+        { page: 1, enabled: false },
+        { page: 2, enabled: false },
+        { page: 3, enabled: false }
+    ];
+
     constructor(target) {
         this.page = 1;
         this.render = new Render(target, this);
-    }
-
-    explain() {
-        console.log(this, 63);
-    }
-
-    a() {
-        console.log("aaaaaaa");
     }
 
     switchToPage(page) {
@@ -116,20 +114,27 @@ class Form {
     }
 
     setFirstName = (name) => {
-        console.log(name, 119);
         this.firstName = name;
         this.questionSetOne[0].previousValue = name;
+        this.updateButtonState(1);
+        this.render.updateBtns(
+            this.nextBtnsForPage.filter((b) => b.page === 1)[0]
+        );
     };
 
     setLastName = (name) => {
-        console.log(name, 125);
         this.lastName = name;
         this.questionSetOne[1].previousValue = name;
+        this.updateButtonState(1);
+        this.render.updateBtns(
+            this.nextBtnsForPage.filter((b) => b.page === 1)[0]
+        );
     };
 
     setHasChildren = (hasChildren) => {
         this.hasChildren = hasChildren;
         this.questionSetTwo[0].previousValue = hasChildren;
+        this.updateButtonState(1);
     };
 
     setHobbies = (hobby) => {
@@ -152,6 +157,7 @@ class Form {
         }
         this.questionSetTwo[1].previousValue = this.hobbies;
         this.render.colourSelectedHobbiesGreen(this.hobbies);
+        this.updateButtonState(1);
     };
 
     setDrivesCar = (drives) => {
@@ -164,4 +170,55 @@ class Form {
         this.yearsExp = years;
         this.questionSetThree[1].previousValue = years;
     };
+
+    updateButtonState(page) {
+        const validator = new Validator();
+        if (page === 1) {
+            if (
+                validator.validName(this.firstName) &&
+                validator.validName(this.lastName)
+            ) {
+                console.log(
+                    validator.validName(this.firstName) &&
+                        validator.validName(this.lastName),
+                    184,
+                    page
+                );
+                this.enableNextBtn(page);
+            } else {
+                this.disableNextBtn(page);
+            }
+        } else if (page === 2) {
+            if (
+                validator.validHasChildren(this.hasChildren) &&
+                this.hobbies.length >= 1
+            ) {
+                this.enableNextBtn(page);
+            } else {
+                this.disableNextBtn(page);
+            }
+        } else if (page === 3) {
+            if (
+                validator.validDrivesCar(this.drivesCar) &&
+                validator.validYearsExperience(this.yearsExperience)
+            ) {
+                this.enableNextBtn(page);
+            } else {
+                this.disableNextBtn(page);
+            }
+        } else {
+            throw new Error("Page out of range");
+        }
+    }
+
+    enableNextBtn(page) {
+        const btn = this.nextBtnsForPage.filter((b) => b.page === page)[0];
+        console.log(btn, 218);
+        btn.enabled = true;
+    }
+
+    disableNextBtn(page) {
+        const btn = this.nextBtnsForPage.filter((b) => b.page === page)[0];
+        btn.enabled = false;
+    }
 }

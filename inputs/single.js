@@ -36,7 +36,7 @@ class singleSelect {
                             .join("")}
                     </select>
                 </div>
-                <div class="validationErrorContainer">
+                <div class="validationErrorContainer text-red-400 font-bold">
                         
                 </div>
             </div>
