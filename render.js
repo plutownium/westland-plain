@@ -210,27 +210,50 @@ class Render {
         }
     }
 
-    updateNextBtn(button) {
-        console.log("...", button, 214);
+    updateNextBtn(button, page) {
+        console.log("...", button, page, 214);
         if (button.enabled) {
+            let nextBtn;
+            if (page === 3) {
+                nextBtn = document.getElementById("submitBtn");
+            } else {
+                nextBtn = document.getElementById("nextBtn");
+            }
             console.log("enabled");
-            const nextBtn = document.getElementById("nextBtn");
             nextBtn.disabled = false;
             nextBtn.classList.add("border-black");
             nextBtn.classList.add("text-black");
             nextBtn.classList.remove("text-gray-300");
-            document
-                .getElementsByClassName("nextBtn")[0]
-                .classList.remove("text-gray-400");
+            if (page == 3) {
+                document
+                    .getElementsByClassName("submitBtn")[0]
+                    .classList.remove("text-gray-400");
+            } else {
+                document
+                    .getElementsByClassName("nextBtn")[0]
+                    .classList.remove("text-gray-400");
+            }
         } else {
             console.log("dis");
-            document.getElementById("nextBtn").disabled = true;
+            let nextBtn;
+            if (page === 3) {
+                nextBtn = document.getElementById("submitBtn");
+            } else {
+                nextBtn = document.getElementById("nextBtn");
+            }
+            nextBtn.disabled = true;
             nextBtn.classList.remove("border-black");
             nextBtn.classList.remove("text-black");
             nextBtn.classList.add("text-gray-300");
-            document
-                .getElementsByClassName("nextBtn")[0]
-                .classList.add("text-gray-400");
+            if (page === 3) {
+                document
+                    .getElementsByClassName("submitBtn")[0]
+                    .classList.add("text-gray-400");
+            } else {
+                document
+                    .getElementsByClassName("nextBtn")[0]
+                    .classList.add("text-gray-400");
+            }
         }
     }
 

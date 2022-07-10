@@ -78,7 +78,8 @@ class Form {
             );
             this.render.attachEventListenersForPage(page);
             this.render.updateNextBtn(
-                this.nextBtnsForPage.filter((b) => b.page === page)[0]
+                this.nextBtnsForPage.filter((b) => b.page === page)[0],
+                page
             );
         } else if (page === 4) {
             console.log("load user data... 84");
@@ -169,34 +170,30 @@ class Form {
         this.questionSetThree[0].previousValue = drives;
         this.updateButtonState(3);
         this.render.updateNextBtn(
-            this.nextBtnsForPage.filter((b) => b.page === 3)[0]
+            this.nextBtnsForPage.filter((b) => b.page === 3)[0],
+            3
         );
     };
 
     setYearsExperience = (years) => {
         this.yearsExp = years;
         this.questionSetThree[1].previousValue = years;
+        console.log(years, 18181823231923123219391329129498193);
         this.updateButtonState(3);
         this.render.updateNextBtn(
-            this.nextBtnsForPage.filter((b) => b.page === 3)[0]
+            this.nextBtnsForPage.filter((b) => b.page === 3)[0],
+            3
         );
     };
 
     updateButtonState(page) {
+        console.log("\n\n\n==\n==\n==IN UPDATE BTN STATE", page);
         const validator = new Validator();
         if (page === 1) {
             if (
                 validator.validName(this.firstName) &&
                 validator.validName(this.lastName)
             ) {
-                console.log(
-                    this.firstName,
-                    this.lastName,
-                    validator.validName(this.firstName) &&
-                        validator.validName(this.lastName),
-                    184,
-                    page
-                );
                 this.enableNextBtn(page);
             } else {
                 this.disableNextBtn(page);
@@ -211,10 +208,16 @@ class Form {
                 this.disableNextBtn(page);
             }
         } else if (page === 3) {
+            console.log(
+                this.drivesCar,
+                validator.validYearsExperience(this.yearsExperience),
+                this.yearsExperience,
+                210000000000000
+            );
             if (
-                (this.drivesCar &&
+                (this.drivesCar === "Yes" &&
                     validator.validYearsExperience(this.yearsExperience)) ||
-                !this.drivesCar
+                this.drivesCar === "No"
             ) {
                 this.enableNextBtn(page);
             } else {
