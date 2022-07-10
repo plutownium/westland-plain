@@ -48,9 +48,8 @@ class dropdown {
             const valid = new Validator().validYearsExperience(
                 event.target.value
             );
-            console.log(event.target.value, valid, 51);
+            handler(event.target.value);
             if (valid) {
-                handler(event.target.value);
                 validationErrorEl.innerHTML = "";
             } else {
                 validationErrorEl.innerHTML = "Must choose years of experience";

@@ -50,8 +50,8 @@ class singleSelect {
             const validationErrorEl = parentOfValidationErrorNode.childNodes[3];
             console.log(validationErrorEl, 159);
             const valid = new Validator().validHasChildren(event.target.value);
+            handler(event.target.value);
             if (valid) {
-                handler(event.target.value);
                 validationErrorEl.innerHTML = "";
             } else {
                 validationErrorEl.innerHTML =

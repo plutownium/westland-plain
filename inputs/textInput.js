@@ -39,8 +39,8 @@ class textInput {
                 element.parentElement.parentElement.parentElement;
             const validationErrorEl = parentOfValidationErrorNode.childNodes[3];
             const valid = new Validator().validName(event.target.value);
+            handler(event.target.value);
             if (valid) {
-                handler(event.target.value);
                 validationErrorEl.innerHTML = "";
             } else {
                 validationErrorEl.innerHTML =

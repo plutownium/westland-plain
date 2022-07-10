@@ -85,21 +85,35 @@ class multiSelect {
                     return; // pretend the click never happened
                 }
 
+                handler(choice);
                 if (
                     validator.changeWouldYieldEmptyArray(
                         choice,
                         multiThis.internalHobbies
                     )
                 ) {
-                    multiThis.setHobby(choice);
-                    handler(choice);
+                    console.log(
+                        choice,
+                        multiThis.internalHobbies,
+                        validator.changeWouldYieldEmptyArray(
+                            choice,
+                            multiThis.internalHobbies
+                        )
+                    );
                     validationErrorEl.innerHTML =
                         "Must select at least one hobby";
                 } else {
-                    multiThis.setHobby(choice);
-                    handler(choice);
+                    console.log(
+                        choice,
+                        multiThis.internalHobbies,
+                        validator.changeWouldYieldEmptyArray(
+                            choice,
+                            multiThis.internalHobbies
+                        )
+                    );
                     validationErrorEl.innerHTML = "";
                 }
+                multiThis.setHobby(choice);
             });
         }
         const multiLineSelectTickboxes = document.getElementsByClassName(

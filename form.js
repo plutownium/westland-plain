@@ -190,6 +190,8 @@ class Form {
                 validator.validName(this.lastName)
             ) {
                 console.log(
+                    this.firstName,
+                    this.lastName,
                     validator.validName(this.firstName) &&
                         validator.validName(this.lastName),
                     184,
@@ -210,8 +212,9 @@ class Form {
             }
         } else if (page === 3) {
             if (
-                validator.validDrivesCar(this.drivesCar) &&
-                validator.validYearsExperience(this.yearsExperience)
+                (this.drivesCar &&
+                    validator.validYearsExperience(this.yearsExperience)) ||
+                !this.drivesCar
             ) {
                 this.enableNextBtn(page);
             } else {

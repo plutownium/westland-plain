@@ -54,9 +54,9 @@ class radioSelect {
                 const valid = new Validator().validDrivesCar(
                     event.target.value
                 );
+                handler(event.target.value);
                 if (valid) {
                     dropdown.classList.remove("hidden");
-                    handler(event.target.value);
                     validationErrorEl.innerHTML = "";
                 } else {
                     validationErrorEl.innerHTML =
@@ -75,9 +75,9 @@ class radioSelect {
                 const valid = new Validator().validDrivesCar(
                     event.target.value
                 );
+                handler(event.target.value);
                 if (valid) {
                     dropdown.classList.add("hidden");
-                    handler(event.target.value);
                     validationErrorEl.innerHTML = "";
                 } else {
                     validationErrorEl.innerHTML =
