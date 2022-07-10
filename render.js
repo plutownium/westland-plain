@@ -210,14 +210,27 @@ class Render {
         }
     }
 
-    updateBtns(button) {
+    updateNextBtn(button) {
         console.log("...", button, 214);
         if (button.enabled) {
             console.log("enabled");
-            document.getElementById("nextBtn").disabled = false;
+            const nextBtn = document.getElementById("nextBtn");
+            nextBtn.disabled = false;
+            nextBtn.classList.add("border-black");
+            nextBtn.classList.add("text-black");
+            nextBtn.classList.remove("text-gray-300");
+            document
+                .getElementsByClassName("nextBtn")[0]
+                .classList.remove("text-gray-400");
         } else {
             console.log("dis");
             document.getElementById("nextBtn").disabled = true;
+            nextBtn.classList.remove("border-black");
+            nextBtn.classList.remove("text-black");
+            nextBtn.classList.add("text-gray-300");
+            document
+                .getElementsByClassName("nextBtn")[0]
+                .classList.add("text-gray-400");
         }
     }
 

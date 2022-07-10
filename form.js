@@ -77,12 +77,13 @@ class Form {
                 this.hobbies
             );
             this.render.attachEventListenersForPage(page);
-            this.page = page;
+            this.render.updateNextBtn(
+                this.nextBtnsForPage.filter((b) => b.page === page)[0]
+            );
         } else if (page === 4) {
             console.log("load user data... 84");
             this.render.loadUserData(this.getUserData(), page);
             this.render.attachEventListenersForPage(page);
-            this.page = page;
         }
     }
 
@@ -109,15 +110,11 @@ class Form {
         };
     }
 
-    setPage(page) {
-        this.page = page;
-    }
-
     setFirstName = (name) => {
         this.firstName = name;
         this.questionSetOne[0].previousValue = name;
         this.updateButtonState(1);
-        this.render.updateBtns(
+        this.render.updateNextBtn(
             this.nextBtnsForPage.filter((b) => b.page === 1)[0]
         );
     };
@@ -126,7 +123,7 @@ class Form {
         this.lastName = name;
         this.questionSetOne[1].previousValue = name;
         this.updateButtonState(1);
-        this.render.updateBtns(
+        this.render.updateNextBtn(
             this.nextBtnsForPage.filter((b) => b.page === 1)[0]
         );
     };
@@ -134,7 +131,10 @@ class Form {
     setHasChildren = (hasChildren) => {
         this.hasChildren = hasChildren;
         this.questionSetTwo[0].previousValue = hasChildren;
-        this.updateButtonState(1);
+        this.updateButtonState(2);
+        this.render.updateNextBtn(
+            this.nextBtnsForPage.filter((b) => b.page === 2)[0]
+        );
     };
 
     setHobbies = (hobby) => {
@@ -157,18 +157,29 @@ class Form {
         }
         this.questionSetTwo[1].previousValue = this.hobbies;
         this.render.colourSelectedHobbiesGreen(this.hobbies);
-        this.updateButtonState(1);
+        this.updateButtonState(2);
+        this.render.updateNextBtn(
+            this.nextBtnsForPage.filter((b) => b.page === 2)[0]
+        );
     };
 
     setDrivesCar = (drives) => {
         console.log("setting drives...", 154, drives);
         this.drivesCar = drives;
         this.questionSetThree[0].previousValue = drives;
+        this.updateButtonState(3);
+        this.render.updateNextBtn(
+            this.nextBtnsForPage.filter((b) => b.page === 3)[0]
+        );
     };
 
     setYearsExperience = (years) => {
         this.yearsExp = years;
         this.questionSetThree[1].previousValue = years;
+        this.updateButtonState(3);
+        this.render.updateNextBtn(
+            this.nextBtnsForPage.filter((b) => b.page === 3)[0]
+        );
     };
 
     updateButtonState(page) {
