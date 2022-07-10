@@ -45,11 +45,10 @@ class dropdown {
         element.addEventListener("change", function (event) {
             const validationErrorEl =
                 document.getElementById("dropdownContainer").childNodes[3];
-            console.log(event.target.value, "48rm");
-            const valid = new Validator().validYearsExperience(
-                parseInt(event.target.value, 10)
-            );
-            handler(parseInt(event.target.value, 10));
+            const yearsAsInteger = parseInt(event.target.value, 10);
+            const valid = new Validator().validYearsExperience(yearsAsInteger);
+            console.log(yearsAsInteger, valid, "48rm");
+            handler(yearsAsInteger);
             if (valid) {
                 validationErrorEl.innerHTML = "";
             } else {

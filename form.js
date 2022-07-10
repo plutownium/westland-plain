@@ -176,9 +176,9 @@ class Form {
     };
 
     setYearsExperience = (years) => {
-        this.yearsExp = years;
+        this.yearsExperience = years;
         this.questionSetThree[1].previousValue = years;
-        console.log(years, 18181823231923123219391329129498193);
+        console.log(years, 18181823231923498193);
         this.updateButtonState(3);
         this.render.updateNextBtn(
             this.nextBtnsForPage.filter((b) => b.page === 3)[0],
